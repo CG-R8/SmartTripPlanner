@@ -46,10 +46,12 @@ const UI = {
       ScheduleEngine.getTypeIcon(activity.type) + ' ' + activity.title;
 
     // Time display
+    const tz = ScheduleEngine.getActivityTimezone(activity, dayNumber);
     let timeText = '';
-    if (times.start != null) {
-      timeText = ScheduleEngine.formatTime(times.start);
-      if (times.end != null) timeText += ' → ' + ScheduleEngine.formatTime(times.end);
+    if (times.startEpoch != null) {
+      timeText = ScheduleEngine.formatEpochAsTime(times.startEpoch, tz);
+      if (times.endEpoch != null) timeText += ' → ' + ScheduleEngine.formatEpochAsTime(times.endEpoch, tz);
+      timeText += ' ' + ScheduleEngine.getActivityTzAbbr(activity, dayNumber);
     }
     if (times.delta !== 0) {
       const dir = times.delta > 0 ? 'late' : 'early';
@@ -139,9 +141,11 @@ const UI = {
     document.getElementById('next-title').textContent =
       ScheduleEngine.getTypeIcon(activity.type) + ' ' + activity.title;
 
+    const tz = ScheduleEngine.getActivityTimezone(activity, dayNumber);
     let timeText = '';
-    if (times.start != null) timeText = ScheduleEngine.formatTime(times.start);
-    if (times.end != null) timeText += ' → ' + ScheduleEngine.formatTime(times.end);
+    if (times.startEpoch != null) timeText = ScheduleEngine.formatEpochAsTime(times.startEpoch, tz);
+    if (times.endEpoch != null) timeText += ' → ' + ScheduleEngine.formatEpochAsTime(times.endEpoch, tz);
+    if (times.startEpoch != null) timeText += ' ' + ScheduleEngine.getActivityTzAbbr(activity, dayNumber);
     document.getElementById('next-time').textContent = timeText;
 
     // Distance
@@ -153,13 +157,13 @@ const UI = {
       document.getElementById('next-distance').textContent = '';
     }
 
-    // ETA — only show real-time countdown for today (TZ-aware)
-    if (times.start != null && ScheduleEngine.isDayToday(dayNumber)) {
-      const minsUntil = times.start - ScheduleEngine.nowMinutes(dayNumber);
+    // ETA — only show real-time countdown for today (epoch-based)
+    if (times.startEpoch != null && ScheduleEngine.isDayToday(dayNumber)) {
+      const minsUntil = Math.round((times.startEpoch - ScheduleEngine.nowEpoch()) / 60000);
       document.getElementById('next-eta').textContent =
         minsUntil > 0 ? `in ${minsUntil} min` : 'now';
-    } else if (times.start != null) {
-      document.getElementById('next-eta').textContent = ScheduleEngine.formatTime(times.start);
+    } else if (times.startEpoch != null) {
+      document.getElementById('next-eta').textContent = ScheduleEngine.formatEpochAsTime(times.startEpoch, tz);
     }
 
     document.getElementById('next-notes').textContent = activity.notes || '';
@@ -191,7 +195,7 @@ const UI = {
     const isToday = ScheduleEngine.isDayToday(dayNumber);
     const isPast = ScheduleEngine.isDayPast(dayNumber);
     const isFuture = ScheduleEngine.isDayFuture(dayNumber);
-    const now = isToday ? ScheduleEngine.nowMinutes(dayNumber) : null;
+    const nowMs = isToday ? ScheduleEngine.nowEpoch() : null;
     const currentActivity = ScheduleEngine.findCurrentActivity(dayNumber);
 
     activities.forEach(act => {
@@ -224,7 +228,7 @@ const UI = {
         // Today + this is the current activity by time
         dotClass = 'current';
         itemClass = 'current';
-      } else if (isToday && times.end != null && now > times.end) {
+      } else if (isToday && times.endEpoch != null && nowMs > times.endEpoch) {
         // Today + time window has passed
         dotClass = 'skipped';
         itemClass = 'completed';
@@ -234,11 +238,12 @@ const UI = {
       el.className = `timeline-item ${itemClass}${isExpanded ? ' expanded' : ''}`;
       el.dataset.activityId = act.id;
 
-      const timeStr = times.start != null ? ScheduleEngine.formatTime(times.start) : '';
-      const endStr = times.end != null ? ScheduleEngine.formatTime(times.end) : '';
+      const actTz = ScheduleEngine.getActivityTimezone(act, dayNumber);
+      const timeStr = times.startEpoch != null ? ScheduleEngine.formatEpochAsTime(times.startEpoch, actTz) : '';
+      const endStr = times.endEpoch != null ? ScheduleEngine.formatEpochAsTime(times.endEpoch, actTz) : '';
 
       let adjustedStr = '';
-      if (times.delta !== 0 && times.start != null) {
+      if (times.delta !== 0 && times.startEpoch != null) {
         adjustedStr = `<span class="timeline-adjusted">(${times.delta > 0 ? '+' : ''}${times.delta}m)</span>`;
       }
 
@@ -366,13 +371,12 @@ const UI = {
 
     // Show check-in timestamps if available (stored as epoch ms)
     if (checkin && checkin.arrivedAt) {
-      const arrTime = ScheduleEngine.formatDateInTZ(new Date(checkin.arrivedAt), dayNumber);
-      html += `<p class="tl-checkin-info">Arrived: ${arrTime}`;
+      const arrTime = ScheduleEngine.formatFullTimestampInTZ(new Date(checkin.arrivedAt), dayNumber);
+      html += `<p class="tl-checkin-info">📍 Arrived: ${arrTime}</p>`;
       if (checkin.leftAt) {
-        const leftTime = ScheduleEngine.formatDateInTZ(new Date(checkin.leftAt), dayNumber);
-        html += ` · Left: ${leftTime}`;
+        const leftTime = ScheduleEngine.formatFullTimestampInTZ(new Date(checkin.leftAt), dayNumber);
+        html += `<p class="tl-checkin-info">🚪 Left: ${leftTime}</p>`;
       }
-      html += '</p>';
     }
 
     html += '</div>';
@@ -410,8 +414,7 @@ const UI = {
 
     // Update clock
     document.getElementById('clock').textContent =
-      ScheduleEngine.formatDate(new Date()) + ' ' +
-      ScheduleEngine.getTimezoneAbbr(App.currentDayNumber);
+      ScheduleEngine.formatDateInTZ(ScheduleEngine.now(), App.currentDayNumber);
   },
 
   // ===== Morning Briefing =====

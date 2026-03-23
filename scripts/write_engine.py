@@ -1,4 +1,8 @@
-// ===== schedule-engine.js — Core time comparison & schedule logic =====
+#!/usr/bin/env python3
+"""Write the new UTC-based schedule-engine.js"""
+import os
+
+CONTENT = r"""// ===== schedule-engine.js — Core time comparison & schedule logic =====
 // All times in itinerary.json are stored as UTC ISO-8601 strings (startTimeUTC, endTimeUTC).
 // Each activity has its own IANA timezone for display.
 // Comparisons are done in epoch milliseconds (absolute time — no TZ math needed).
@@ -346,3 +350,9 @@ const ScheduleEngine = {
     return labels[type] || type;
   }
 };
+"""
+
+path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'app', 'schedule-engine.js')
+with open(path, 'w', encoding='utf-8') as f:
+    f.write(CONTENT.lstrip('\n'))
+print(f"✅ Wrote {os.path.getsize(path)} bytes → {path}")

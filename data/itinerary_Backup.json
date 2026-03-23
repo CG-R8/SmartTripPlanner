@@ -1,0 +1,1376 @@
+{
+  "trip": {
+    "name": "Southwest USA Road Trip 2026",
+    "startDate": "2026-03-24",
+    "endDate": "2026-03-31",
+    "travelers": "2 Adults + 3.5-Year-Old Toddler",
+    "totalMiles": 900,
+    "states": ["California", "Nevada", "Arizona", "Utah"],
+    "nationalParks": ["Death Valley", "Grand Canyon", "Bryce Canyon", "Zion"]
+  },
+  "emergencyContacts": {
+    "hertzRoadside": "1-800-654-3131",
+    "avisRoadside": "1-800-352-7900",
+    "emergency": "911",
+    "hospitals": [
+      { "name": "Cedars-Sinai Medical Center (LA)", "phone": "(310) 423-3277" },
+      { "name": "Sunrise Hospital (Vegas)", "phone": "(702) 731-8000" },
+      { "name": "Flagstaff Medical Center", "phone": "(928) 779-3366" },
+      { "name": "Page Hospital", "phone": "(928) 645-2424" },
+      { "name": "Dixie Regional Medical Center (St. George)", "phone": "(435) 251-1000" }
+    ]
+  },
+  "flights": {
+    "outbound": {
+      "airline": "Spirit Airlines NK 1670",
+      "route": "Newark (EWR) → Los Angeles (LAX)",
+      "date": "2026-03-24",
+      "departure": "18:59",
+      "departureTimezone": "EST",
+      "arrival": "22:14",
+      "arrivalTimezone": "PST",
+      "duration": "5h 15m"
+    },
+    "return": {
+      "airline": "United Airlines UA 1681",
+      "route": "Las Vegas (LAS) → Newark (EWR)",
+      "date": "2026-03-31",
+      "departure": "22:40",
+      "departureTimezone": "PST",
+      "arrival": "06:35+1",
+      "arrivalTimezone": "EST",
+      "duration": "4h 55m"
+    }
+  },
+  "rentalCars": [
+    {
+      "company": "Hertz",
+      "confirmation": "L5330521952",
+      "pickup": "LAX (5251 W 98th St, Los Angeles, CA 90045)",
+      "pickupDateTime": "2026-03-24T23:30:00",
+      "dropoff": "Las Vegas McCarran Rent-A-Car Center",
+      "dropoffDateTime": "2026-03-26T23:30:00",
+      "cost": 230.00,
+      "mileage": "UNLIMITED",
+      "days": 2,
+      "covers": "LA, Ridgecrest, Death Valley, Vegas arrival"
+    },
+    {
+      "company": "Avis",
+      "pickup": "Las Vegas McCarran Rent-A-Car Center",
+      "pickupDateTime": "2026-03-26T23:30:00",
+      "dropoff": "Las Vegas McCarran Rent-A-Car Center",
+      "dropoffDateTime": "2026-03-31T22:00:00",
+      "mileage": "UNLIMITED",
+      "days": 5,
+      "covers": "Grand Canyon, Page, Antelope Canyon, Bryce, Zion, return to Vegas"
+    }
+  ],
+  "days": [
+    {
+      "dayNumber": 1,
+      "date": "2026-03-24",
+      "dayOfWeek": "Tuesday",
+      "timezone": "America/Los_Angeles",
+      "title": "Arrive Los Angeles",
+      "subtitle": "Newark → LAX → Motel 6",
+      "weather": {
+        "location": "Los Angeles",
+        "summary": "65°F clear evening",
+        "high": 68,
+        "low": 55,
+        "tips": "Pleasant LA evening, light jacket for outdoor wait at LAX"
+      },
+      "hotel": {
+        "name": "Motel 6 Los Angeles LAX",
+        "address": "5101 W Century Blvd, Inglewood, CA 90304",
+        "confirmation": "73401176534457",
+        "cost": 100.00,
+        "phone": "(310) 419-1234",
+        "checkIn": "12:15 AM (late night arrival)",
+        "checkOut": "9:45 AM next day"
+      },
+      "highlights": ["✈️ Spirit NK 1670 EWR→LAX", "🚗 Hertz rental car pickup", "🏨 Late night Motel 6 check-in"],
+      "dailyTips": [
+        "Body clock will be 3 hours ahead (EST) — everyone will be tired",
+        "Let toddler sleep in car on way to hotel",
+        "Don't forget to install car seat at Hertz!",
+        "Fill water bottles before leaving airport"
+      ],
+      "activities": [
+        {
+          "id": "d1a1",
+          "type": "travel",
+          "title": "Depart Newark (Spirit NK 1670)",
+          "plannedStart": "18:59",
+          "plannedEnd": "22:14",
+          "duration": 315,
+          "timezone": "Flight crosses EST→PST",
+          "location": { "name": "Newark Airport (EWR) → LAX" },
+          "notes": "Spirit Terminal A. Board bags online to save $. Toddler ear pressure: sippy cup during takeoff/landing.",
+          "tips": ["Pre-board with toddler (ask gate agent)", "Downloaded shows on tablet — no free entertainment on Spirit", "Snacks from home — Spirit charges for everything"]
+        },
+        {
+          "id": "d1a2",
+          "type": "travel",
+          "title": "Land at LAX",
+          "plannedStart": "22:14",
+          "plannedEnd": "22:30",
+          "duration": 16,
+          "location": { "name": "Los Angeles Airport (LAX)" },
+          "notes": "Collect baggage at carousel. Follow signs to Baggage Claim (lower level)."
+        },
+        {
+          "id": "d1a3",
+          "type": "travel",
+          "title": "Baggage Claim + Hertz Shuttle",
+          "plannedStart": "22:30",
+          "plannedEnd": "23:00",
+          "duration": 30,
+          "location": { "name": "LAX Baggage Claim" },
+          "notes": "Grab bags, exit to LAX-it shuttle area, find Hertz blue shuttle (every 5-10 min)."
+        },
+        {
+          "id": "d1a4",
+          "type": "checkin",
+          "title": "Pick Up Hertz Rental Car",
+          "plannedStart": "23:00",
+          "plannedEnd": "23:45",
+          "duration": 45,
+          "location": { "name": "Hertz LAX", "address": "5251 W 98th St, Los Angeles, CA 90045" },
+          "confirmation": "L5330521952",
+          "notes": "Install car seat FIRST! Check car condition, note any damage. Unlimited mileage confirmed.",
+          "tips": ["Install car seat before loading bags", "Take photos of any existing car damage", "Check tire pressure and gas level"]
+        },
+        {
+          "id": "d1a5",
+          "type": "travel",
+          "title": "Drive to Motel 6",
+          "plannedStart": "23:45",
+          "plannedEnd": "00:15",
+          "duration": 30,
+          "distance": { "miles": 3.5, "estimatedMinutes": 15, "route": "W Century Blvd — 3 min drive" },
+          "location": { "name": "En route to Motel 6 LAX" },
+          "notes": "Very short drive! Motel 6 is right near LAX."
+        },
+        {
+          "id": "d1a6",
+          "type": "checkin",
+          "title": "Check into Motel 6",
+          "plannedStart": "00:15",
+          "plannedEnd": "00:45",
+          "duration": 30,
+          "location": { "name": "Motel 6 Los Angeles LAX", "address": "5101 W Century Blvd, Inglewood, CA 90304" },
+          "confirmation": "73401176534457",
+          "notes": "Late night check-in. Get room, unload essentials only, everyone to bed ASAP.",
+          "tips": ["Just bring essentials — unpack rest tomorrow", "Toddler may be cranky — get them to bed fast"]
+        }
+      ]
+    },
+    {
+      "dayNumber": 2,
+      "date": "2026-03-25",
+      "dayOfWeek": "Wednesday",
+      "timezone": "America/Los_Angeles",
+      "title": "LA Sightseeing → Ridgecrest",
+      "subtitle": "Beverly Hills, Hollywood, Griffith Observatory → Desert Drive",
+      "weather": {
+        "location": "LA → Ridgecrest",
+        "summary": "LA 68°F sunny | Ridgecrest 72°F clear",
+        "high": 72,
+        "low": 55,
+        "tips": "Perfect spring weather. Layers recommended — starts cool, warms up."
+      },
+      "hotel": {
+        "name": "Clarion Pointe Ridgecrest",
+        "address": "535 S China Lake Blvd, Ridgecrest, CA 93555",
+        "confirmation": "977557178",
+        "cost": 82.25,
+        "phone": "(760) 446-7951",
+        "checkIn": "9:45 PM",
+        "notes": "Breakfast included in rate!"
+      },
+      "highlights": ["⭐ Rodeo Drive (Beverly Hills)", "⭐ Hollywood Sign viewpoint", "⭐ Griffith Observatory + LA sunset", "🚗 Scenic drive to Ridgecrest"],
+      "dailyTips": [
+        "Comfortable walking shoes — you'll walk 2-3 miles today",
+        "LA sun is strong — reapply sunscreen",
+        "Save tablet for the long afternoon drive to Ridgecrest",
+        "Gas up before leaving LA area"
+      ],
+      "activities": [
+        {
+          "id": "d2a1",
+          "type": "meal",
+          "title": "Wake Up + Breakfast",
+          "plannedStart": "09:00",
+          "plannedEnd": "09:45",
+          "duration": 45,
+          "location": { "name": "Motel 6 LAX" },
+          "notes": "McDonald's next door if no hotel breakfast. Grab extras for car snacks.",
+          "tips": ["Quick breakfast — big day ahead!", "Pack up room completely, DON'T FORGET CHARGERS"]
+        },
+        {
+          "id": "d2a2",
+          "type": "checkout",
+          "title": "Checkout Motel 6 + Drive to Beverly Hills",
+          "plannedStart": "09:45",
+          "plannedEnd": "10:30",
+          "duration": 45,
+          "distance": { "miles": 12, "estimatedMinutes": 35, "route": "I-405 N → I-10 W → Beverly Hills" },
+          "location": { "name": "En route to Beverly Hills" },
+          "notes": "Return key cards. Mid-morning traffic should be moderate (sweet spot between rush hours)."
+        },
+        {
+          "id": "d2a3",
+          "type": "visit",
+          "title": "Rodeo Drive Exploration",
+          "plannedStart": "10:40",
+          "plannedEnd": "12:00",
+          "duration": 80,
+          "location": { "name": "Rodeo Drive, Beverly Hills", "address": "9500 Wilshire Blvd, Beverly Hills, CA 90212" },
+          "notes": "100% FREE to walk and window shop! Only 3 blocks long.",
+          "whatToDo": [
+            "Beverly Wilshire Hotel — 'Pretty Woman' hotel, walk into lobby for photos",
+            "Tiffany & Co, Gucci, Prada — window shopping",
+            "Via Rodeo — cobblestone European-style street, best photo spot",
+            "2 Rodeo Drive — spiral staircase, fountains",
+            "People watching — spot luxury cars!"
+          ],
+          "tips": ["Free parking on Dayton Way (1 block east)", "Take family photo at Beverly Wilshire entrance", "2-hour parking limit on most streets"]
+        },
+        {
+          "id": "d2a4",
+          "type": "meal",
+          "title": "Lunch in West Hollywood",
+          "plannedStart": "12:30",
+          "plannedEnd": "13:30",
+          "duration": 60,
+          "distance": { "miles": 3, "estimatedMinutes": 20, "route": "Short drive from Beverly Hills" },
+          "location": { "name": "West Hollywood area" },
+          "notes": "Multiple restaurant options. Budget ~$30-40 for family."
+        },
+        {
+          "id": "d2a5",
+          "type": "visit",
+          "title": "Hollywood Sign Photos",
+          "plannedStart": "14:00",
+          "plannedEnd": "14:40",
+          "duration": 40,
+          "distance": { "miles": 5, "estimatedMinutes": 20, "route": "Drive from lunch to Lake Hollywood Park" },
+          "location": { "name": "Lake Hollywood Park" },
+          "notes": "Best close-up view of Hollywood Sign without hiking. Flat, stroller-friendly path.",
+          "whatToDo": [
+            "Walk to viewpoint — 5 minute flat walk from parking",
+            "Family photos with Hollywood Sign behind you",
+            "See Lake Hollywood reservoir"
+          ],
+          "tips": ["Park on Canyon Lake Dr (free street parking)", "Don't try to hike to the actual sign — too far with toddler"]
+        },
+        {
+          "id": "d2a6",
+          "type": "visit",
+          "title": "Griffith Observatory + LA Sunset",
+          "plannedStart": "15:30",
+          "plannedEnd": "17:45",
+          "duration": 135,
+          "distance": { "miles": 3, "estimatedMinutes": 20, "route": "Short drive from Lake Hollywood" },
+          "location": { "name": "Griffith Observatory", "address": "2800 E Observatory Rd, Los Angeles, CA 90027" },
+          "notes": "FREE admission! One of LA's best attractions. Amazing city views + Hollywood Sign visible.",
+          "whatToDo": [
+            "Observation decks — 360° views of LA, Hollywood Sign, ocean on clear day",
+            "Tesla Coil show (free, inside, ~5 min) — toddler will love sparks!",
+            "Planet exhibits (free) — touch meteorites, see moon/planet displays",
+            "Zeiss telescope (free at night) — if staying past dark",
+            "Sunset viewing from front lawn — spectacular!"
+          ],
+          "tips": ["Parking is $10/hour (limited!) — arrive by 3:15 PM", "Sunset ~6:30-7:00 PM in late March", "Bring jacket for evening — gets breezy up on the hill"]
+        },
+        {
+          "id": "d2a7",
+          "type": "travel",
+          "title": "Drive Toward Desert (Start)",
+          "plannedStart": "18:00",
+          "plannedEnd": "18:30",
+          "duration": 30,
+          "location": { "name": "Leaving LA area" },
+          "notes": "Head north/east out of LA. Traffic should be manageable by 6 PM going outbound."
+        },
+        {
+          "id": "d2a8",
+          "type": "meal",
+          "title": "Dinner Stop — Palmdale",
+          "plannedStart": "18:30",
+          "plannedEnd": "19:30",
+          "duration": 60,
+          "distance": { "miles": 60, "estimatedMinutes": 60, "route": "CA-14 N to Palmdale/Lancaster" },
+          "location": { "name": "Palmdale/Lancaster area" },
+          "notes": "Last major food stop before Ridgecrest. Multiple fast food and restaurant options.",
+          "tips": ["Fill gas tank here — cheaper than Ridgecrest"]
+        },
+        {
+          "id": "d2a9",
+          "type": "travel",
+          "title": "Drive to Ridgecrest",
+          "plannedStart": "19:30",
+          "plannedEnd": "21:30",
+          "duration": 120,
+          "distance": { "miles": 100, "estimatedMinutes": 120, "route": "CA-14 N → US-395 N" },
+          "location": { "name": "En route to Ridgecrest" },
+          "notes": "Dark desert drive. Good road but no services. Downloaded music/podcasts recommended.",
+          "tips": ["Watch for wildlife on desert roads at night", "Keep headlights on high when no oncoming traffic"]
+        },
+        {
+          "id": "d2a10",
+          "type": "checkin",
+          "title": "Check into Clarion Pointe Ridgecrest",
+          "plannedStart": "21:45",
+          "plannedEnd": "22:00",
+          "duration": 15,
+          "location": { "name": "Clarion Pointe Ridgecrest", "address": "535 S China Lake Blvd, Ridgecrest, CA 93555" },
+          "confirmation": "977557178",
+          "notes": "Quick check-in, unpack, everyone to bed. Breakfast included tomorrow!",
+          "tips": ["Ask about breakfast hours (usually 6:30-9:30 AM)"]
+        }
+      ]
+    },
+    {
+      "dayNumber": 3,
+      "date": "2026-03-26",
+      "dayOfWeek": "Thursday",
+      "timezone": "America/Los_Angeles",
+      "title": "Death Valley → Vegas + Car Swap",
+      "subtitle": "Death Valley National Park → Henderson → Midnight Car Swap",
+      "weather": {
+        "location": "Ridgecrest → Death Valley → Vegas",
+        "summary": "Ridgecrest 70°F | Death Valley 82-85°F | Vegas 72°F",
+        "high": 85,
+        "low": 60,
+        "tips": "Death Valley is HOT even in March. Light clothes, sun protection, LOTS of water!"
+      },
+      "hotel": {
+        "name": "Best Western Plus Las Vegas South Henderson",
+        "address": "3041 St Rose Pkwy, Henderson, NV 89052",
+        "confirmation": "292893",
+        "cost": 136.00,
+        "phone": "(702) 434-1620",
+        "checkIn": "5:30 PM"
+      },
+      "highlights": ["⭐ Death Valley: Badwater Basin (-282 ft!)", "⭐ Artist's Palette (colorful rocks)", "⭐ Zabriskie Point (golden badlands)", "⚠️ CRITICAL: Midnight Car Swap (Hertz → Avis)"],
+      "dailyTips": [
+        "⚠️ BUY 6 GALLONS WATER before entering Death Valley!",
+        "⚠️ FILL GAS in Ridgecrest — NO gas in Death Valley!",
+        "Long day — ends at 12:45 AM with car swap",
+        "NAP at hotel 7:30-11 PM before car swap",
+        "DON'T FORGET CAR SEAT when switching cars!"
+      ],
+      "activities": [
+        {
+          "id": "d3a1",
+          "type": "meal",
+          "title": "Wake Up + Breakfast (Hotel Included)",
+          "plannedStart": "09:00",
+          "plannedEnd": "09:45",
+          "duration": 45,
+          "location": { "name": "Clarion Pointe Ridgecrest" },
+          "notes": "Breakfast included! Eat hearty — Death Valley has NO food. Grab extras if allowed.",
+          "tips": ["This serves as breakfast AND lunch", "Load up on protein + carbs + fruit"]
+        },
+        {
+          "id": "d3a2",
+          "type": "errand",
+          "title": "⚠️ BUY WATER + Fill Gas",
+          "plannedStart": "09:45",
+          "plannedEnd": "10:15",
+          "duration": 30,
+          "location": { "name": "Walmart & Gas Station, Ridgecrest", "address": "801 N China Lake Blvd, Ridgecrest" },
+          "notes": "⚠️ NOT OPTIONAL! Buy 6 gallons water ($6 at Walmart). Fill gas to 100%. Last bathroom before Death Valley!",
+          "tips": ["One parent runs into Walmart, other stays with toddler", "Get extra snacks, crackers, trail mix", "Check tire pressure while pumping gas"]
+        },
+        {
+          "id": "d3a3",
+          "type": "travel",
+          "title": "Drive to Death Valley",
+          "plannedStart": "10:15",
+          "plannedEnd": "11:45",
+          "duration": 90,
+          "distance": { "miles": 110, "estimatedMinutes": 90, "route": "CA-178 West (Trona-Wildrose Road)" },
+          "location": { "name": "En route to Death Valley" },
+          "notes": "Desert drive, almost no traffic. Cell service spotty to none — use offline maps! Look for Joshua trees and wild burros.",
+          "tips": ["Watch speed — easy to go fast on empty roads", "America the Beautiful pass saves money ($30 entry)"]
+        },
+        {
+          "id": "d3a4",
+          "type": "visit",
+          "title": "Artist's Palette Scenic Drive",
+          "plannedStart": "12:00",
+          "plannedEnd": "12:45",
+          "duration": 45,
+          "location": { "name": "Artist's Palette, Death Valley" },
+          "notes": "9-mile one-way scenic loop drive through colorful rock formations. Stay in car with AC — it's hot!",
+          "whatToDo": [
+            "Drive the one-way loop (9 miles, ~30 min)",
+            "Stop at viewpoints for photos",
+            "See the rainbow-colored hillsides (iron, mica, manganese deposits)",
+            "Short walks to rock formations (stay on trail)"
+          ],
+          "tips": ["Keep AC running", "Quick stops only — it's 85°F outside", "Beautiful photo opportunity"]
+        },
+        {
+          "id": "d3a5",
+          "type": "visit",
+          "title": "Badwater Basin — Lowest Point in N. America!",
+          "plannedStart": "13:00",
+          "plannedEnd": "13:30",
+          "duration": 30,
+          "location": { "name": "Badwater Basin, Death Valley" },
+          "notes": "-282 feet below sea level! Walk out on the salt flats. Look for the 'sea level' sign on cliff above.",
+          "whatToDo": [
+            "Walk onto salt flats (boardwalk then open flats)",
+            "Look UP at cliff — see 'SEA LEVEL' sign 282 ft above you",
+            "Feel the salt crystals under your feet",
+            "Take family photo at the Badwater Basin sign"
+          ],
+          "tips": ["Don't walk too far out — it's HOT", "10-15 minutes on flats is enough", "Bring water to drink while walking", "Toddler in stroller or carrier"]
+        },
+        {
+          "id": "d3a6",
+          "type": "visit",
+          "title": "Zabriskie Point",
+          "plannedStart": "13:45",
+          "plannedEnd": "14:15",
+          "duration": 30,
+          "location": { "name": "Zabriskie Point, Death Valley" },
+          "notes": "Stunning golden badlands viewpoint. Short walk from parking lot.",
+          "whatToDo": [
+            "Walk to main viewpoint (2 min from parking)",
+            "Panoramic photos of golden/yellow badlands",
+            "See Manly Beacon (pointed peak)",
+            "Look across entire Death Valley"
+          ],
+          "tips": ["Short easy walk", "Bring sun hat — no shade", "Amazing photos in afternoon light"]
+        },
+        {
+          "id": "d3a7",
+          "type": "travel",
+          "title": "Drive to Pahrump (Exit Death Valley)",
+          "plannedStart": "15:00",
+          "plannedEnd": "16:00",
+          "duration": 60,
+          "distance": { "miles": 60, "estimatedMinutes": 60, "route": "NV-160 toward Las Vegas" },
+          "location": { "name": "Exiting Death Valley toward Nevada" },
+          "notes": "Leaving Death Valley into Nevada. Landscape transitions from desert valley to sagebrush."
+        },
+        {
+          "id": "d3a8",
+          "type": "meal",
+          "title": "Early Dinner — Pahrump, NV",
+          "plannedStart": "16:00",
+          "plannedEnd": "16:30",
+          "duration": 30,
+          "location": { "name": "Pahrump, NV" },
+          "notes": "Quick stop for food. First real town since Ridgecrest. Multiple fast food options."
+        },
+        {
+          "id": "d3a9",
+          "type": "travel",
+          "title": "Drive to Henderson Hotel",
+          "plannedStart": "16:30",
+          "plannedEnd": "17:30",
+          "duration": 60,
+          "distance": { "miles": 60, "estimatedMinutes": 60, "route": "NV-160 → Las Vegas/Henderson" },
+          "location": { "name": "En route to Henderson, NV" }
+        },
+        {
+          "id": "d3a10",
+          "type": "checkin",
+          "title": "Check into Best Western Henderson",
+          "plannedStart": "17:30",
+          "plannedEnd": "18:00",
+          "duration": 30,
+          "location": { "name": "Best Western Plus Henderson", "address": "3041 St Rose Pkwy, Henderson, NV 89052" },
+          "confirmation": "292893",
+          "notes": "Check in, unpack, settle toddler. Breakfast included tomorrow!",
+          "tips": ["SET ALARM for 11 PM (car swap!)", "Everyone should nap 7:30-11 PM"]
+        },
+        {
+          "id": "d3a11",
+          "type": "rest",
+          "title": "⚠️ REST / NAP Before Car Swap",
+          "plannedStart": "19:30",
+          "plannedEnd": "23:00",
+          "duration": 210,
+          "location": { "name": "Best Western Henderson" },
+          "notes": "⚠️ CRITICAL: Sleep now! Car swap is at 11:30 PM. Set multiple alarms for 11 PM."
+        },
+        {
+          "id": "d3a12",
+          "type": "errand",
+          "title": "⚠️ MIDNIGHT CAR SWAP (Hertz → Avis)",
+          "plannedStart": "23:15",
+          "plannedEnd": "00:30",
+          "duration": 75,
+          "location": { "name": "McCarran Rent-A-Car Center", "address": "7135 Gilespie St, Las Vegas, NV 89119" },
+          "confirmation": "Hertz: L5330521952",
+          "notes": "⚠️ DON'T FORGET: Move CAR SEAT from Hertz to Avis! Return Hertz, pick up Avis, drive back to hotel.",
+          "tips": ["Car seat transfer is #1 priority", "Check new Avis car condition", "Keep all Hertz receipts", "15 min drive each way from hotel"]
+        }
+      ]
+    },
+    {
+      "dayNumber": 4,
+      "date": "2026-03-27",
+      "dayOfWeek": "Friday",
+      "timezone": "America/Phoenix",
+      "title": "Hoover Dam → Grand Canyon Sunset",
+      "subtitle": "Henderson → Hoover Dam → Kingman → Valle → Grand Canyon",
+      "weather": {
+        "location": "Henderson → Grand Canyon",
+        "summary": "Henderson 72°F | Hoover Dam 75°F | Grand Canyon 55°F→45°F at sunset",
+        "high": 75,
+        "low": 45,
+        "tips": "Grand Canyon is COLD at sunset! 7,000 ft elevation. BRING WARM JACKETS for evening!"
+      },
+      "hotel": {
+        "name": "Grand Canyon Inn",
+        "address": "257 AZ-64, Williams (Valle), AZ 86046",
+        "confirmation": "29012764396",
+        "cost": 107.00,
+        "phone": "(928) 635-9203",
+        "checkIn": "4:00 PM"
+      },
+      "highlights": ["⭐ Hoover Dam", "⭐ GRAND CANYON SUNSET (trip highlight!)", "🌲 Pine forest drive"],
+      "dailyTips": [
+        "Grand Canyon entry: $35 OR America the Beautiful pass",
+        "Sunset ~7:00-7:15 PM — plan arrival by 5 PM!",
+        "Temperature drops 10-15°F at sunset — warm clothes essential!",
+        "Pack warm jackets accessible in car (NOT trunk!)"
+      ],
+      "activities": [
+        {
+          "id": "d4a1",
+          "type": "meal",
+          "title": "Wake Up + Breakfast (Hotel Included)",
+          "plannedStart": "09:00",
+          "plannedEnd": "09:45",
+          "duration": 45,
+          "location": { "name": "Best Western Henderson" },
+          "notes": "Breakfast included. Eat well — lunch not until 1 PM."
+        },
+        {
+          "id": "d4a2",
+          "type": "checkout",
+          "title": "Checkout + Depart for Hoover Dam",
+          "plannedStart": "09:45",
+          "plannedEnd": "10:00",
+          "duration": 15,
+          "location": { "name": "Best Western Henderson" },
+          "notes": "Quick checkout. Have warm jackets accessible for Grand Canyon this evening!"
+        },
+        {
+          "id": "d4a3",
+          "type": "travel",
+          "title": "Drive to Hoover Dam",
+          "plannedStart": "10:00",
+          "plannedEnd": "10:45",
+          "duration": 45,
+          "distance": { "miles": 35, "estimatedMinutes": 45, "route": "US-93 South" },
+          "location": { "name": "En route to Hoover Dam" },
+          "notes": "Lake Mead visible on approach. Security checkpoint at dam — all vehicles screened.",
+          "tips": ["There IS a security checkpoint — don't be surprised"]
+        },
+        {
+          "id": "d4a4",
+          "type": "visit",
+          "title": "Hoover Dam Visit",
+          "plannedStart": "10:45",
+          "plannedEnd": "12:00",
+          "duration": 75,
+          "location": { "name": "Hoover Dam", "address": "Hoover Dam, NV/AZ border" },
+          "notes": "Engineering marvel! Free to walk across the dam. Visitor center is optional ($10/person).",
+          "whatToDo": [
+            "Walk across the dam (free!) — see both NV and AZ sides",
+            "Look down 726 feet to Colorado River below",
+            "See the Mike O'Callaghan–Pat Tillman Memorial Bridge",
+            "Photo ops with Art Deco angel statues",
+            "Visitor Center (optional, $10/adult, $8/child)"
+          ],
+          "tips": ["Free to walk and photograph", "Stroller works fine on walkway", "No large bags allowed (security)", "Two time zones on the dam — NV and AZ!"]
+        },
+        {
+          "id": "d4a5",
+          "type": "travel",
+          "title": "Drive to Kingman, AZ",
+          "plannedStart": "12:15",
+          "plannedEnd": "12:45",
+          "duration": 30,
+          "distance": { "miles": 30, "estimatedMinutes": 30, "route": "US-93 South into Arizona" },
+          "location": { "name": "En route to Kingman" }
+        },
+        {
+          "id": "d4a6",
+          "type": "meal",
+          "title": "Lunch in Kingman, AZ",
+          "plannedStart": "12:45",
+          "plannedEnd": "13:30",
+          "duration": 45,
+          "location": { "name": "Kingman, AZ" },
+          "notes": "Multiple restaurant options. Historic Route 66 town! Budget ~$30-40."
+        },
+        {
+          "id": "d4a7",
+          "type": "travel",
+          "title": "Drive to Valle (Grand Canyon Inn)",
+          "plannedStart": "13:45",
+          "plannedEnd": "16:00",
+          "duration": 135,
+          "distance": { "miles": 140, "estimatedMinutes": 135, "route": "I-40 East → AZ-64 North" },
+          "location": { "name": "En route to Valle, AZ" },
+          "notes": "Longest drive segment today. Landscape changes from desert to pine forests as you gain elevation."
+        },
+        {
+          "id": "d4a8",
+          "type": "checkin",
+          "title": "Check into Grand Canyon Inn",
+          "plannedStart": "16:00",
+          "plannedEnd": "16:30",
+          "duration": 30,
+          "location": { "name": "Grand Canyon Inn", "address": "257 AZ-64, Valle, AZ 86046" },
+          "confirmation": "29012764396",
+          "notes": "Quick check-in. Change into warm layers! Grand Canyon will be COLD.",
+          "tips": ["PUT ON WARM JACKETS NOW", "Temperature at canyon: 55°F dropping to 45°F"]
+        },
+        {
+          "id": "d4a9",
+          "type": "travel",
+          "title": "Drive to Grand Canyon South Rim",
+          "plannedStart": "16:30",
+          "plannedEnd": "17:05",
+          "duration": 35,
+          "distance": { "miles": 25, "estimatedMinutes": 35, "route": "AZ-64 North" },
+          "location": { "name": "En route to Grand Canyon" },
+          "notes": "Show America the Beautiful pass at entrance. Get free park map!"
+        },
+        {
+          "id": "d4a10",
+          "type": "visit",
+          "title": "⭐ GRAND CANYON SUNSET Experience",
+          "plannedStart": "17:15",
+          "plannedEnd": "19:30",
+          "duration": 135,
+          "location": { "name": "Grand Canyon South Rim" },
+          "notes": "TRIP HIGHLIGHT! Sunset ~7:00-7:15 PM. Arrive early for best viewing spots.",
+          "whatToDo": [
+            "Mather Point — first and most iconic viewpoint",
+            "Rim Trail walk (paved, stroller-friendly) toward Yavapai Point",
+            "Yavapai Geology Museum — free, great exhibits",
+            "Watch sunset colors transform the canyon walls",
+            "Golden hour photography — the canyon glows orange/red/purple"
+          ],
+          "tips": ["Sunset ~7:00-7:15 PM late March", "Arrive by 5:15 PM to explore before sunset", "COLD at sunset — wear warm jackets!", "Stay behind railings — serious drop-offs", "Toddler must be supervised at ALL times near edge"]
+        },
+        {
+          "id": "d4a11",
+          "type": "travel",
+          "title": "Drive Back to Valle Hotel",
+          "plannedStart": "19:30",
+          "plannedEnd": "20:00",
+          "duration": 30,
+          "distance": { "miles": 25, "estimatedMinutes": 30, "route": "AZ-64 South" },
+          "location": { "name": "En route back to hotel" }
+        },
+        {
+          "id": "d4a12",
+          "type": "meal",
+          "title": "Dinner at/near Hotel",
+          "plannedStart": "20:00",
+          "plannedEnd": "21:00",
+          "duration": 60,
+          "location": { "name": "Grand Canyon Inn area, Valle" },
+          "notes": "Limited options in Valle. Hotel may have restaurant or snack bar. Bring backup snacks."
+        }
+      ]
+    },
+    {
+      "dayNumber": 5,
+      "date": "2026-03-28",
+      "dayOfWeek": "Saturday",
+      "timezone": "America/Phoenix",
+      "title": "⚠️ CRITICAL: Antelope Canyon Day",
+      "subtitle": "Quick Grand Canyon Morning → Antelope Canyon Tour → Horseshoe Bend",
+      "weather": {
+        "location": "Valle → Page",
+        "summary": "Valle 50°F morning | Grand Canyon 48°F | Page 75°F",
+        "high": 75,
+        "low": 48,
+        "tips": "Grand Canyon morning is COLD (48°F). Page afternoon is warm (75°F). Layers!"
+      },
+      "hotel": {
+        "name": "Super 8 by Wyndham Page",
+        "address": "649 S Lake Powell Blvd, Page, AZ 86040",
+        "confirmation": "92913484516",
+        "cost": 101.10,
+        "phone": "(928) 645-2858",
+        "checkIn": "2:00 PM"
+      },
+      "highlights": ["⭐ ANTELOPE CANYON TOUR 12:15 PM (TRIP HIGHLIGHT!)", "⭐ Horseshoe Bend", "🌅 Quick Grand Canyon morning visit"],
+      "dailyTips": [
+        "⚠️ 6:45 AM WAKE-UP — earliest of trip! SET 3+ ALARMS!",
+        "⚠️ MUST leave Grand Canyon by 9:00 AM SHARP!",
+        "⚠️ Arrive Dixie's office by 11:30 AM (45 min early — MANDATORY)",
+        "Pack EVERYTHING the night before — no time in morning",
+        "REST period 2-3:30 PM after tour is essential"
+      ],
+      "activities": [
+        {
+          "id": "d5a1",
+          "type": "meal",
+          "title": "⚠️ EARLY Wake Up + Grab-and-Go Breakfast",
+          "plannedStart": "06:45",
+          "plannedEnd": "07:10",
+          "duration": 25,
+          "location": { "name": "Grand Canyon Inn, Valle" },
+          "notes": "⚠️ DO NOT HIT SNOOZE! Grab breakfast items packed last night. Eat in car. NO SHOWERS — no time!",
+          "tips": ["Clothes should be laid out from last night", "Toddler will be cranky — power through!", "Just grab toddler + final items and GO"]
+        },
+        {
+          "id": "d5a2",
+          "type": "checkout",
+          "title": "Pack Car + Checkout",
+          "plannedStart": "07:10",
+          "plannedEnd": "07:25",
+          "duration": 15,
+          "location": { "name": "Grand Canyon Inn" },
+          "notes": "Should be mostly packed from last night. Quick room sweep, return keys, GO."
+        },
+        {
+          "id": "d5a3",
+          "type": "travel",
+          "title": "Drive to Grand Canyon (Quick Morning Visit)",
+          "plannedStart": "07:25",
+          "plannedEnd": "08:00",
+          "duration": 35,
+          "distance": { "miles": 25, "estimatedMinutes": 35, "route": "AZ-64 North" },
+          "location": { "name": "En route to Grand Canyon" }
+        },
+        {
+          "id": "d5a4",
+          "type": "visit",
+          "title": "Quick Grand Canyon Morning Visit",
+          "plannedStart": "08:00",
+          "plannedEnd": "08:50",
+          "duration": 50,
+          "location": { "name": "Grand Canyon South Rim" },
+          "notes": "Quick visit — morning light on the canyon is beautiful! Different vibe than sunset.",
+          "whatToDo": [
+            "Mather Point in morning light — stunning different perspective",
+            "Quick Rim Trail walk if time",
+            "Gift shop for souvenirs (opens ~8 AM)"
+          ],
+          "tips": ["⚠️ MUST LEAVE BY 9:00 AM — non-negotiable!", "Set phone alarm for 8:50 AM as warning"]
+        },
+        {
+          "id": "d5a5",
+          "type": "travel",
+          "title": "⚠️ Drive Grand Canyon → Page (CRITICAL TIMING)",
+          "plannedStart": "09:00",
+          "plannedEnd": "11:25",
+          "duration": 145,
+          "distance": { "miles": 135, "estimatedMinutes": 145, "route": "AZ-64 East → US-89 North" },
+          "location": { "name": "En route to Page, AZ" },
+          "notes": "⚠️ ZERO room for error! 2.5-hour drive. Optional quick stop at Cameron Trading Post (10:15 AM, 15 min max).",
+          "tips": ["Cameron Trading Post at 10:15 AM — bathroom + quick look only", "Don't linger — tour is non-refundable!"]
+        },
+        {
+          "id": "d5a6",
+          "type": "visit",
+          "title": "⭐ ANTELOPE CANYON TOUR (Dixie's Lower)",
+          "plannedStart": "11:30",
+          "plannedEnd": "13:30",
+          "duration": 120,
+          "location": { "name": "Dixie's Lower Antelope Canyon Tours", "address": "48 S Lake Powell Blvd, Page, AZ 86040" },
+          "confirmation": "Check booking email",
+          "notes": "⭐ TRIP HIGHLIGHT! Must arrive by 11:30 AM (45 min before 12:15 PM tour). ~1 hour tour + transport.",
+          "whatToDo": [
+            "Check in at Dixie's office by 11:30 AM",
+            "Board shuttle to canyon entrance",
+            "Walk through slot canyon — narrow, winding, light beams!",
+            "Photos of light beams (best 11 AM-1 PM)",
+            "Follow guide's instructions at all times"
+          ],
+          "tips": ["Light jackets — 60°F inside canyon", "Camera/phone for photos", "Follow guide exactly", "Toddler must walk (no strollers in canyon)", "Bring water"]
+        },
+        {
+          "id": "d5a7",
+          "type": "checkin",
+          "title": "Drive to Hotel + Check In",
+          "plannedStart": "13:45",
+          "plannedEnd": "14:00",
+          "duration": 15,
+          "location": { "name": "Super 8 Page", "address": "649 S Lake Powell Blvd, Page, AZ 86040" },
+          "confirmation": "92913484516",
+          "notes": "Quick check-in. Everyone needs rest after the early morning!"
+        },
+        {
+          "id": "d5a8",
+          "type": "rest",
+          "title": "⚠️ CRITICAL REST PERIOD",
+          "plannedStart": "14:00",
+          "plannedEnd": "15:30",
+          "duration": 90,
+          "location": { "name": "Super 8 Page" },
+          "notes": "⚠️ ESSENTIAL! Everyone nap/rest. You've been up since 6:45 AM. Toddler needs this. Adults need this."
+        },
+        {
+          "id": "d5a9",
+          "type": "visit",
+          "title": "⭐ Horseshoe Bend",
+          "plannedStart": "15:45",
+          "plannedEnd": "17:00",
+          "duration": 75,
+          "location": { "name": "Horseshoe Bend", "address": "US-89, Page, AZ" },
+          "notes": "Iconic Colorado River horseshoe-shaped meander. 1.5-mile round trip walk from parking.",
+          "whatToDo": [
+            "Walk trail from parking lot (0.75 miles, ~15 min)",
+            "Arrive at cliff edge — jaw-dropping 1,000 ft drop",
+            "Photos of the horseshoe bend",
+            "Late afternoon light is beautiful"
+          ],
+          "tips": ["$10 parking fee", "Carry toddler OR use carrier near edge", "⚠️ NO RAILING at the edge — hold toddler tightly!", "Bring water for the walk", "Stroller works on most of trail"]
+        },
+        {
+          "id": "d5a10",
+          "type": "meal",
+          "title": "Dinner in Page",
+          "plannedStart": "17:15",
+          "plannedEnd": "18:30",
+          "duration": 75,
+          "location": { "name": "Page, AZ" },
+          "notes": "Multiple restaurant options on Lake Powell Blvd. Budget ~$40-50."
+        },
+        {
+          "id": "d5a11",
+          "type": "rest",
+          "title": "Back to Hotel + Relax + PACK FOR TOMORROW",
+          "plannedStart": "18:30",
+          "plannedEnd": "20:00",
+          "duration": 90,
+          "location": { "name": "Super 8 Page" },
+          "notes": "Relax, pack for tomorrow (Bryce Canyon — need WARM clothes accessible!). Early-ish bedtime."
+        }
+      ]
+    },
+    {
+      "dayNumber": 6,
+      "date": "2026-03-29",
+      "dayOfWeek": "Sunday",
+      "timezone": "America/Denver",
+      "timezoneNote": "Crosses AZ(MST/UTC-7) → UT(MDT/UTC-6). Phone clock jumps FORWARD 1hr at border. All times listed in MDT.",
+      "title": "Page → Bryce Canyon",
+      "subtitle": "Drive to Bryce Canyon National Park — Hoodoos & Rim Trail",
+      "weather": {
+        "location": "Page → Bryce Canyon",
+        "summary": "Page 75°F | Drive 65-70°F | Bryce 40-55°F (COLD!)",
+        "high": 75,
+        "low": 40,
+        "tips": "Bryce is 8,000 ft elevation — 20-30°F colder than Page! Pack WARM jackets, long pants, maybe gloves!"
+      },
+      "hotel": {
+        "name": "Best Western Plus Ruby's Inn",
+        "address": "26 S Main St, Bryce Canyon City, UT 84764",
+        "confirmation": "979267618",
+        "cost": 105.00,
+        "phone": "(435) 834-5341",
+        "checkIn": "3:50 PM"
+      },
+      "highlights": ["⭐ BRYCE CANYON (orange/red hoodoos!)", "⭐ Sunset Point (most iconic!)", "⭐ Rim Trail walk (stroller-friendly!)", "⭐ Sunrise Point + Inspiration Point"],
+      "dailyTips": [
+        "SLEEP IN today! 8:30 AM wake-up (you earned it!)",
+        "Bryce = 8,000 ft = COLD! 40-55°F",
+        "Have warm jackets accessible in car, NOT trunk",
+        "Entry fee: $35 OR America the Beautiful pass"
+      ],
+      "activities": [
+        {
+          "id": "d6a1",
+          "type": "meal",
+          "title": "Sleep In! + Breakfast (Hotel Included)",
+          "plannedStart": "08:30",
+          "plannedEnd": "09:15",
+          "duration": 45,
+          "location": { "name": "Super 8 Page" },
+          "notes": "Sleep in! Breakfast included. Eat well — lunch at 12:30 PM."
+        },
+        {
+          "id": "d6a2",
+          "type": "checkout",
+          "title": "Pack + Checkout + Depart",
+          "plannedStart": "09:15",
+          "plannedEnd": "09:30",
+          "duration": 15,
+          "location": { "name": "Super 8 Page" },
+          "notes": "Pack warm clothes ACCESSIBLE in car for Bryce. Not in trunk!"
+        },
+        {
+          "id": "d6a3",
+          "type": "travel",
+          "title": "Drive Page → Kanab",
+          "plannedStart": "09:30",
+          "plannedEnd": "10:45",
+          "duration": 75,
+          "distance": { "miles": 75, "estimatedMinutes": 75, "route": "US-89 South" },
+          "location": { "name": "En route through Vermillion Cliffs" },
+          "notes": "Beautiful drive! Red rock country, Vermillion Cliffs, Colorado River area. Crossing into Utah!"
+        },
+        {
+          "id": "d6a4",
+          "type": "errand",
+          "title": "Gas + Bathroom Stop — Kanab, UT",
+          "plannedStart": "10:45",
+          "plannedEnd": "11:00",
+          "duration": 15,
+          "location": { "name": "Kanab, UT" },
+          "notes": "Quick gas/bathroom stop. Cute small town."
+        },
+        {
+          "id": "d6a5",
+          "type": "travel",
+          "title": "Drive Kanab → Bryce Canyon Area",
+          "plannedStart": "11:00",
+          "plannedEnd": "12:00",
+          "duration": 60,
+          "distance": { "miles": 75, "estimatedMinutes": 60, "route": "US-89 → UT-12" },
+          "location": { "name": "En route to Bryce" },
+          "notes": "Landscape changes dramatically — gaining elevation, pine forests appear."
+        },
+        {
+          "id": "d6a6",
+          "type": "meal",
+          "title": "Lunch at Ruby's Inn",
+          "plannedStart": "12:00",
+          "plannedEnd": "12:45",
+          "duration": 45,
+          "location": { "name": "Ruby's Inn, Bryce Canyon City" },
+          "notes": "Restaurant right at park entrance. Good food, reasonable prices."
+        },
+        {
+          "id": "d6a7",
+          "type": "visit",
+          "title": "⭐ Sunset Point (Most Iconic Viewpoint!)",
+          "plannedStart": "13:10",
+          "plannedEnd": "13:50",
+          "duration": 40,
+          "location": { "name": "Sunset Point, Bryce Canyon" },
+          "notes": "Enter Bryce Canyon, drive to Sunset Point. Most photographed viewpoint in the park!",
+          "whatToDo": [
+            "Walk to viewpoint overlook (2 min from parking)",
+            "See thousands of orange/red hoodoo rock spires",
+            "Thor's Hammer — the iconic single standing hoodoo",
+            "Wall Street section visible below",
+            "Panoramic photos"
+          ],
+          "tips": ["IT'S COLD! Wear all your warm layers", "Stroller works on paved path to viewpoint", "Best photos in afternoon light"]
+        },
+        {
+          "id": "d6a8",
+          "type": "visit",
+          "title": "Rim Trail Walk (Sunset → Sunrise Point)",
+          "plannedStart": "13:50",
+          "plannedEnd": "14:20",
+          "duration": 30,
+          "location": { "name": "Rim Trail, Bryce Canyon" },
+          "notes": "Paved, relatively flat trail between viewpoints. Stroller-friendly! Amazing views the whole way.",
+          "whatToDo": [
+            "Walk the paved Rim Trail (0.5 miles)",
+            "Continuous views of hoodoos the entire walk",
+            "Multiple photo stops along the way",
+            "Easy enough for toddler to walk parts"
+          ]
+        },
+        {
+          "id": "d6a9",
+          "type": "visit",
+          "title": "⭐ Sunrise Point",
+          "plannedStart": "14:20",
+          "plannedEnd": "14:50",
+          "duration": 30,
+          "location": { "name": "Sunrise Point, Bryce Canyon" },
+          "notes": "Different angle on the hoodoos. Can see Boat Mesa and the Sinking Ship formation.",
+          "whatToDo": [
+            "Walk to viewpoint",
+            "Different hoodoo formations than Sunset Point",
+            "See Boat Mesa (flat-topped mesa)",
+            "More family photos!"
+          ]
+        },
+        {
+          "id": "d6a10",
+          "type": "visit",
+          "title": "⭐ Inspiration Point (Best Panoramic!)",
+          "plannedStart": "15:05",
+          "plannedEnd": "15:35",
+          "duration": 30,
+          "location": { "name": "Inspiration Point, Bryce Canyon" },
+          "notes": "Highest concentration of hoodoos visible. Three viewing levels — Upper is best!",
+          "whatToDo": [
+            "Upper Inspiration Point — best panoramic view in the park",
+            "See the Silent City (massive hoodoo field)",
+            "Three levels of viewpoints to explore",
+            "Best overall 'wow' factor"
+          ]
+        },
+        {
+          "id": "d6a11",
+          "type": "checkin",
+          "title": "Check into Ruby's Inn",
+          "plannedStart": "15:50",
+          "plannedEnd": "16:00",
+          "duration": 10,
+          "location": { "name": "Best Western Plus Ruby's Inn", "address": "26 S Main St, Bryce Canyon City, UT 84764" },
+          "confirmation": "979267618",
+          "notes": "Quick check-in. Rest time!"
+        },
+        {
+          "id": "d6a12",
+          "type": "rest",
+          "title": "Rest at Hotel",
+          "plannedStart": "16:00",
+          "plannedEnd": "16:45",
+          "duration": 45,
+          "location": { "name": "Ruby's Inn" },
+          "notes": "Warm up, rest, recharge."
+        },
+        {
+          "id": "d6a13",
+          "type": "visit",
+          "title": "Optional: Bryce Point",
+          "plannedStart": "16:45",
+          "plannedEnd": "17:15",
+          "duration": 30,
+          "location": { "name": "Bryce Point, Bryce Canyon" },
+          "notes": "Optional extra viewpoint if energy permits. Great views of the entire amphitheater."
+        },
+        {
+          "id": "d6a14",
+          "type": "meal",
+          "title": "Dinner at Ruby's Inn Restaurant",
+          "plannedStart": "18:00",
+          "plannedEnd": "19:00",
+          "duration": 60,
+          "location": { "name": "Ruby's Inn Restaurant" },
+          "notes": "Convenient dinner right at the hotel. Good western food."
+        }
+      ]
+    },
+    {
+      "dayNumber": 7,
+      "date": "2026-03-30",
+      "dayOfWeek": "Monday",
+      "timezone": "America/Los_Angeles",
+      "timezoneNote": "Starts in UT(MDT/UTC-6), crosses to NV(PDT/UTC-7). Phone clock jumps BACK 1hr. All times listed in PDT.",
+      "title": "Zion National Park → Vegas Strip Finale",
+      "subtitle": "Bryce → Zion → Las Vegas Strip Evening",
+      "weather": {
+        "location": "Bryce → Zion → Vegas",
+        "summary": "Bryce 45°F morning | Zion 65°F | Vegas 75°F",
+        "high": 75,
+        "low": 45,
+        "tips": "Dress in layers — cold morning, warm by afternoon. Vegas evening is perfect."
+      },
+      "hotel": {
+        "name": "Luxor Hotel & Casino",
+        "address": "3900 S Las Vegas Blvd, Las Vegas, NV 89119",
+        "confirmation": "73400497641876",
+        "cost": 100.00,
+        "phone": "(702) 262-4000",
+        "checkIn": "3:30 PM"
+      },
+      "highlights": ["⭐ ZION NATIONAL PARK (towering red cliffs!)", "⭐ Zion Shuttle Experience", "⭐ LAS VEGAS STRIP! (Bellagio Fountains, lights!)", "🎰 Trip finale celebration!"],
+      "dailyTips": [
+        "Zion entry: $35 OR America the Beautiful pass",
+        "Optional quick Bryce morning view (20 min) — worth it!",
+        "Vegas Strip evening is family-friendly",
+        "Late bedtime okay — vacation finale!"
+      ],
+      "activities": [
+        {
+          "id": "d7a1",
+          "type": "meal",
+          "title": "Wake Up + Breakfast at Ruby's Inn",
+          "plannedStart": "07:00",
+          "plannedEnd": "07:45",
+          "duration": 45,
+          "location": { "name": "Ruby's Inn" },
+          "notes": "Breakfast included. Eat well — lunch not until 12:30 PM."
+        },
+        {
+          "id": "d7a2",
+          "type": "checkout",
+          "title": "Checkout + Pack",
+          "plannedStart": "07:30",
+          "plannedEnd": "07:45",
+          "duration": 15,
+          "location": { "name": "Ruby's Inn" }
+        },
+        {
+          "id": "d7a3",
+          "type": "visit",
+          "title": "Optional: Quick Bryce Morning View",
+          "plannedStart": "07:55",
+          "plannedEnd": "08:15",
+          "duration": 20,
+          "location": { "name": "Sunset Point, Bryce Canyon" },
+          "notes": "Morning light = completely different than yesterday! Soft, cool tones. Worth 20 minutes if everyone is rested.",
+          "tips": ["Skip if running late or toddler is fussy", "You saw it well yesterday — this is bonus"]
+        },
+        {
+          "id": "d7a4",
+          "type": "travel",
+          "title": "Drive Bryce → Zion",
+          "plannedStart": "08:15",
+          "plannedEnd": "09:50",
+          "duration": 95,
+          "distance": { "miles": 85, "estimatedMinutes": 95, "route": "UT-12 West → US-89 South → UT-9 West" },
+          "location": { "name": "En route to Zion" },
+          "notes": "UT-12 = One of America's most scenic roads! Red Canyon, pine forests, mountain views. Temperature rises as you descend toward Zion.",
+          "tips": ["Enjoy the scenery — this drive is gorgeous!", "Temperature warming: 45°F → 65°F"]
+        },
+        {
+          "id": "d7a5",
+          "type": "visit",
+          "title": "Zion Visitor Center + Parking",
+          "plannedStart": "09:50",
+          "plannedEnd": "10:15",
+          "duration": 25,
+          "location": { "name": "Zion National Park Visitor Center" },
+          "notes": "Show America the Beautiful pass. Get shuttle info, park map, and ranger tips.",
+          "tips": ["Parking fills by 10 AM — you're arriving at good time", "Free shuttle is only way into canyon"]
+        },
+        {
+          "id": "d7a6",
+          "type": "visit",
+          "title": "⭐ Zion Canyon Shuttle Experience",
+          "plannedStart": "10:15",
+          "plannedEnd": "12:15",
+          "duration": 120,
+          "location": { "name": "Zion Canyon, Zion National Park" },
+          "notes": "Free shuttle system takes you through the canyon. Get on/off at various stops. 2 hours to see highlights.",
+          "whatToDo": [
+            "Board shuttle at Visitor Center",
+            "Big Bend stop — best views of the Great White Throne",
+            "Temple of Sinawava (end of road) — short Riverside Walk (1 mi paved, stroller-friendly)",
+            "See Angels Landing from below (no hiking it with toddler!)",
+            "Court of the Patriarchs — three massive sandstone peaks",
+            "Emerald Pools trail (if time — Lower Pool is easy, 1.2 mi round trip)"
+          ],
+          "tips": ["Shuttles run every 7-10 minutes", "Get off at Big Bend for best photos", "Riverside Walk at end is flat and easy", "Bring snacks and water"]
+        },
+        {
+          "id": "d7a7",
+          "type": "meal",
+          "title": "Lunch in Springdale, UT",
+          "plannedStart": "12:15",
+          "plannedEnd": "13:00",
+          "duration": 45,
+          "location": { "name": "Springdale, UT (Zion entrance town)" },
+          "notes": "Cute tourist town right at Zion entrance. Multiple restaurant options. Budget ~$35-45."
+        },
+        {
+          "id": "d7a8",
+          "type": "travel",
+          "title": "Drive Zion → Las Vegas",
+          "plannedStart": "13:00",
+          "plannedEnd": "15:30",
+          "duration": 150,
+          "distance": { "miles": 160, "estimatedMinutes": 150, "route": "I-15 South" },
+          "location": { "name": "En route to Las Vegas" },
+          "notes": "Straightforward freeway drive. Landscape changes from red rock to desert. Entering Nevada!"
+        },
+        {
+          "id": "d7a9",
+          "type": "checkin",
+          "title": "Check into Luxor Hotel & Casino",
+          "plannedStart": "15:30",
+          "plannedEnd": "16:00",
+          "duration": 30,
+          "location": { "name": "Luxor Hotel & Casino", "address": "3900 S Las Vegas Blvd, Las Vegas, NV 89119" },
+          "confirmation": "73400497641876",
+          "notes": "The pyramid hotel! Check in, rest, prepare for Vegas Strip evening.",
+          "tips": ["Valet parking or self-park", "Rest is important — Vegas evening will be exciting", "Change into fresh clothes for Strip walk"]
+        },
+        {
+          "id": "d7a10",
+          "type": "rest",
+          "title": "REST at Luxor",
+          "plannedStart": "16:00",
+          "plannedEnd": "17:30",
+          "duration": 90,
+          "location": { "name": "Luxor Hotel" },
+          "notes": "Everyone rest/nap. Big evening ahead! Freshen up, change clothes."
+        },
+        {
+          "id": "d7a11",
+          "type": "visit",
+          "title": "⭐ LAS VEGAS STRIP Evening!",
+          "plannedStart": "17:30",
+          "plannedEnd": "21:00",
+          "duration": 210,
+          "location": { "name": "Las Vegas Strip", "address": "Las Vegas Blvd, Las Vegas, NV" },
+          "notes": "Trip finale! Walk the Strip, see the lights, enjoy the atmosphere. Family-friendly before 10 PM.",
+          "whatToDo": [
+            "Bellagio Fountains — free water show every 15-30 min (mesmerizing!)",
+            "Walk through hotel lobbies — Bellagio, Caesars Palace, Venetian",
+            "See the volcano at The Mirage (if running)",
+            "M&M's World — 4 floors of candy (toddler heaven!)",
+            "Coca-Cola Store — fun photo ops",
+            "Street performers and lights — toddler will be amazed",
+            "Quick dinner on the Strip"
+          ],
+          "tips": ["Bellagio Fountains are FREE and magical at night", "Toddler in stroller — lots of walking", "Vegas is safe and family-friendly in early evening", "Budget $50-80 for dinner on Strip"]
+        }
+      ]
+    },
+    {
+      "dayNumber": 8,
+      "date": "2026-03-31",
+      "dayOfWeek": "Tuesday",
+      "timezone": "America/Los_Angeles",
+      "title": "Final Day — Vegas → Fly Home",
+      "subtitle": "Relax, Pool, Return Car, Fly Home",
+      "weather": {
+        "location": "Las Vegas",
+        "summary": "75°F perfect weather!",
+        "high": 75,
+        "low": 60,
+        "tips": "Perfect pool weather. Sunscreen if swimming! Last day — enjoy it."
+      },
+      "hotel": {
+        "name": "Luxor Hotel & Casino (checkout today)",
+        "address": "3900 S Las Vegas Blvd, Las Vegas, NV 89119",
+        "confirmation": "73400497641876",
+        "cost": 0,
+        "phone": "(702) 262-4000",
+        "checkOut": "Late checkout if possible"
+      },
+      "highlights": ["🏊 Pool time at Luxor!", "😌 Relaxation day", "🚗 Return Avis car by 8 PM", "✈️ United UA 1681 — 10:40 PM → Newark"],
+      "dailyTips": [
+        "SLEEP IN! No early alarm needed!",
+        "Late flight (10:40 PM) = full relaxation day!",
+        "Return Avis car by 7-8 PM",
+        "Ask for late checkout at Luxor",
+        "No rushing today — ENJOY IT!"
+      ],
+      "activities": [
+        {
+          "id": "d8a1",
+          "type": "meal",
+          "title": "Sleep In! + Breakfast",
+          "plannedStart": "09:00",
+          "plannedEnd": "10:00",
+          "duration": 60,
+          "location": { "name": "Luxor Hotel" },
+          "notes": "No early alarm! Wake naturally. Starbucks in lobby or room service. Keep it simple."
+        },
+        {
+          "id": "d8a2",
+          "type": "visit",
+          "title": "Pool Time or Relaxation",
+          "plannedStart": "10:00",
+          "plannedEnd": "12:00",
+          "duration": 120,
+          "location": { "name": "Luxor Pool" },
+          "notes": "75°F = perfect pool weather! Check with front desk if pool is open and heated. Bring swimsuits, sunscreen, towels.",
+          "whatToDo": [
+            "Splash in pool with toddler",
+            "Relax in lounge chairs",
+            "Soak up the Vegas sun",
+            "Or just chill in room — zero pressure today!"
+          ],
+          "tips": ["Supervise toddler constantly at pool!", "Reapply sunscreen every hour", "Towels available at pool station"]
+        },
+        {
+          "id": "d8a3",
+          "type": "meal",
+          "title": "Lunch",
+          "plannedStart": "12:00",
+          "plannedEnd": "13:00",
+          "duration": 60,
+          "location": { "name": "Luxor or nearby" },
+          "notes": "Hotel restaurant, food court, or walk to nearby options. Keep it easy."
+        },
+        {
+          "id": "d8a4",
+          "type": "rest",
+          "title": "More Pool or Rest in Room",
+          "plannedStart": "13:00",
+          "plannedEnd": "15:00",
+          "duration": 120,
+          "location": { "name": "Luxor Hotel" },
+          "notes": "Enjoy last vacation hours however you want!"
+        },
+        {
+          "id": "d8a5",
+          "type": "rest",
+          "title": "Late Checkout + Final Relax",
+          "plannedStart": "15:00",
+          "plannedEnd": "17:00",
+          "duration": 120,
+          "location": { "name": "Luxor Hotel" },
+          "notes": "Ask about late checkout. If not possible, store bags with bell desk."
+        },
+        {
+          "id": "d8a6",
+          "type": "errand",
+          "title": "Final Pack + Quick Dinner",
+          "plannedStart": "17:00",
+          "plannedEnd": "18:30",
+          "duration": 90,
+          "location": { "name": "Luxor Hotel" },
+          "notes": "Pack everything completely. Quick dinner at hotel or grab food for airport. Load car."
+        },
+        {
+          "id": "d8a7",
+          "type": "errand",
+          "title": "⚠️ Return Avis Rental Car",
+          "plannedStart": "19:00",
+          "plannedEnd": "20:00",
+          "duration": 60,
+          "location": { "name": "McCarran Rent-A-Car Center", "address": "7135 Gilespie St, Las Vegas, NV 89119" },
+          "notes": "Return Avis car. Remove car seat and ALL items from car. Take shuttle to airport terminal.",
+          "tips": ["Remove car seat FIRST", "Check trunk, under seats, door pockets for forgotten items", "Fill gas before returning (or pay their inflated price)", "Keep Avis receipt"]
+        },
+        {
+          "id": "d8a8",
+          "type": "travel",
+          "title": "Shuttle to LAS Terminal",
+          "plannedStart": "20:00",
+          "plannedEnd": "20:30",
+          "duration": 30,
+          "location": { "name": "McCarran Airport Terminal" },
+          "notes": "Free shuttle from Rent-A-Car Center to terminal. 5-10 minute ride."
+        },
+        {
+          "id": "d8a9",
+          "type": "errand",
+          "title": "Check-In + TSA Security + Gate",
+          "plannedStart": "20:30",
+          "plannedEnd": "22:00",
+          "duration": 90,
+          "location": { "name": "Las Vegas McCarran Airport (LAS)" },
+          "notes": "United Airlines check-in. TSA security. Find gate. 2+ hours of buffer time.",
+          "tips": ["Toddler keeps shoes on through TSA", "Buy water/snacks after security", "Charge devices at gate", "Let toddler burn energy before boarding"]
+        },
+        {
+          "id": "d8a10",
+          "type": "travel",
+          "title": "✈️ DEPART LAS VEGAS — Fly Home!",
+          "plannedStart": "22:40",
+          "plannedEnd": "06:35",
+          "duration": 295,
+          "location": { "name": "United UA 1681: LAS → EWR" },
+          "notes": "Red-eye flight. Toddler should sleep most of it. Arrive Newark 6:35 AM. TRIP COMPLETE! 🎉",
+          "tips": ["Ear pressure for toddler: sippy cup during takeoff/landing", "Everyone try to sleep", "Set clocks ahead 3 hours (PST → EST)", "Welcome home!"]
+        }
+      ]
+    }
+  ]
+}

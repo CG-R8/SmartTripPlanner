@@ -822,6 +822,93 @@ body {
   text-align: center;
 }
 
+/* ===== DEBUG TIME OVERRIDE PANEL ===== */
+#debug-panel {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--bg-primary);
+  border: 1px dashed var(--yellow);
+  border-radius: 12px;
+}
+
+.debug-title {
+  font-size: 15px;
+  color: var(--yellow);
+  margin: 0 0 4px;
+}
+
+.debug-desc {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.debug-row label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.debug-row input[type="date"],
+.debug-row input[type="time"],
+.debug-row select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  min-width: 160px;
+}
+
+.debug-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-debug-apply {
+  flex: 1;
+  background: var(--yellow) !important;
+  color: #000 !important;
+  font-size: 13px !important;
+  padding: 8px !important;
+}
+
+.btn-debug-clear {
+  flex: 1;
+  background: var(--bg-secondary) !important;
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  padding: 8px !important;
+  border: 1px solid var(--border) !important;
+}
+
+.debug-status {
+  margin-top: 8px;
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  font-weight: 600;
+}
+
+.debug-status.active {
+  color: var(--yellow);
+}
+
+.debug-status.off {
+  color: var(--text-muted);
+}
+
 /* ===== UTILITIES ===== */
 .subtle { color: var(--text-muted); }
 .hidden { display: none !important; }

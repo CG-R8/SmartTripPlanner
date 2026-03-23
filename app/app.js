@@ -7,8 +7,11 @@ const App = {
 
   async init() {
     try {
+      // Auto-clear stale localStorage if data format changed
+      Storage.checkDataVersion();
+
       // Load itinerary
-      const response = await fetch('../data/itinerary.json');
+      const response = await fetch('../data/itinerary.json').catch(() => fetch('./data/itinerary.json'));
       this.itinerary = await response.json();
       ScheduleEngine.load(this.itinerary);
 
@@ -93,9 +96,8 @@ const App = {
 
     // Also update clock every second (with timezone abbreviation)
     setInterval(() => {
-      const tz = ScheduleEngine.getTimezoneAbbr(this.currentDayNumber);
       document.getElementById('clock').textContent =
-        ScheduleEngine.formatDate(new Date()) + ' ' + tz;
+        ScheduleEngine.formatDateInTZ(ScheduleEngine.now(), this.currentDayNumber);
     }, 1000);
   },
 
@@ -233,6 +235,123 @@ const App = {
     document.getElementById('btn-export-log').addEventListener('click', () => {
       Storage.exportTripLog();
     });
+
+    // ===== Debug Time Override =====
+    this._initDebugPanel();
+  },
+
+  _initDebugPanel() {
+    const debugDate = document.getElementById('debug-date');
+    const debugTime = document.getElementById('debug-time');
+    const debugTz = document.getElementById('debug-tz');
+    const debugStatus = document.getElementById('debug-status');
+
+    // Pre-fill with trip start date and current time
+    debugDate.value = '2026-03-24';
+    debugTime.value = '08:00:00';
+
+    // Restore saved override on load
+    const saved = Storage.get('debug_time_override');
+    if (saved) {
+      ScheduleEngine.setTimeOverride(new Date(saved.epoch));
+      debugDate.value = saved.date || debugDate.value;
+      debugTime.value = saved.time || debugTime.value;
+      debugTz.value = saved.tz || '';
+      this._updateDebugStatus();
+      this._onTimeOverrideChanged();
+    }
+
+    document.getElementById('btn-debug-apply').addEventListener('click', () => {
+      const dateVal = debugDate.value;
+      const timeVal = debugTime.value || '12:00:00';
+      const tzVal = debugTz.value;
+
+      if (!dateVal) {
+        debugStatus.textContent = '⚠️ Please select a date';
+        debugStatus.className = 'debug-status active';
+        return;
+      }
+
+      // Build a Date in the selected timezone (or local if none)
+      let fakeDate;
+      if (tzVal) {
+        // Create date as if we're in that timezone
+        // Parse the local datetime, find the offset, and construct correct epoch
+        const localStr = `${dateVal}T${timeVal}`;
+        const naive = new Date(localStr);  // Parsed as local
+
+        // Get what the time would be in target TZ
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: tzVal,
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour12: false
+        });
+        // Current offset of target TZ from UTC
+        const nowInTZ = formatter.formatToParts(new Date());
+        const localNow = new Date();
+        // Simpler: just use the date/time as-is and let the TZ conversion handle it
+        // We want: "pretend it's dateVal timeVal in tzVal"
+        // So we create a UTC time that, when converted to tzVal, shows our desired time
+        const probe = new Date(`${dateVal}T${timeVal}Z`); // treat as UTC first
+        const inTZ = new Intl.DateTimeFormat('en-US', {
+          timeZone: tzVal, hour: 'numeric', minute: 'numeric', hour12: false
+        }).formatToParts(probe);
+        const tzHour = parseInt(inTZ.find(p => p.type === 'hour')?.value || '0');
+        const tzMin = parseInt(inTZ.find(p => p.type === 'minute')?.value || '0');
+        const [wantH, wantM, wantS] = timeVal.split(':').map(Number);
+        const offsetMins = ((tzHour * 60 + tzMin) - (wantH * 60 + wantM));
+        fakeDate = new Date(probe.getTime() - offsetMins * 60000);
+      } else {
+        // No TZ selected — treat as device-local time
+        fakeDate = new Date(`${dateVal}T${timeVal}`);
+      }
+
+      ScheduleEngine.setTimeOverride(fakeDate);
+
+      // Save to localStorage so it persists across refreshes
+      Storage.set('debug_time_override', {
+        epoch: fakeDate.getTime(),
+        date: dateVal,
+        time: timeVal,
+        tz: tzVal
+      });
+
+      this._updateDebugStatus();
+      this._onTimeOverrideChanged();
+    });
+
+    document.getElementById('btn-debug-clear').addEventListener('click', () => {
+      ScheduleEngine.clearTimeOverride();
+      Storage.remove('debug_time_override');
+      this._updateDebugStatus();
+      this._onTimeOverrideChanged();
+    });
+  },
+
+  _updateDebugStatus() {
+    const el = document.getElementById('debug-status');
+    if (ScheduleEngine.hasTimeOverride()) {
+      const fakeNow = ScheduleEngine.now();
+      const dayNum = this.currentDayNumber;
+      el.textContent = '⏱ Override active: ' +
+        ScheduleEngine.formatFullTimestampInTZ(fakeNow, dayNum);
+      el.className = 'debug-status active';
+    } else {
+      el.textContent = '✓ Using real time';
+      el.className = 'debug-status off';
+    }
+  },
+
+  _onTimeOverrideChanged() {
+    // Auto-switch to the correct day for the overridden date
+    const todayNum = ScheduleEngine.currentDayNumber();
+    if (todayNum) {
+      this.renderDay(todayNum);
+    } else {
+      // Date is outside trip range — stay on current day but refresh
+      this._updateCurrentStatus();
+    }
   },
 
   // ===== Arrival / Departure — works for ANY activity =====
@@ -255,7 +374,7 @@ const App = {
     const activity = ScheduleEngine.getDayActivities(dayNumber).find(a => a.id === activityId);
     if (!activity) return;
 
-    const epochMs = Date.now();
+    const epochMs = ScheduleEngine.nowEpoch();
     Storage.recordArrival(activityId, epochMs);
 
     // Show confirmation if available
@@ -277,22 +396,23 @@ const App = {
     const activity = ScheduleEngine.getDayActivities(dayNumber).find(a => a.id === activityId);
     if (!activity) return;
 
-    const epochMs = Date.now();
+    const epochMs = ScheduleEngine.nowEpoch();
     Storage.recordDeparture(activityId, epochMs);
 
-    // Adjust schedule using timezone-correct minutes
-    const nowMins = ScheduleEngine.nowMinutes(dayNumber);
-    const delta = ScheduleEngine.adjustSchedule(dayNumber, activityId, nowMins);
+    // Adjust schedule using epoch-based comparison (only meaningful for today)
+    if (ScheduleEngine.isDayToday(dayNumber)) {
+      const delta = ScheduleEngine.adjustSchedule(dayNumber, activityId);
 
-    // Notify about adjustment
-    if (delta > 5) {
-      Notify.alert('⏰ Schedule Adjusted',
-        `Running ${delta} min late. Remaining activities shifted.`,
-        { tag: 'schedule-adjust' });
-    } else if (delta < -5) {
-      Notify.alert('⏩ Ahead of Schedule!',
-        `${Math.abs(delta)} min early! Remaining activities shifted.`,
-        { tag: 'schedule-adjust' });
+      // Notify about adjustment
+      if (delta > 5) {
+        Notify.alert('⏰ Schedule Adjusted',
+          `Running ${delta} min late. Remaining activities shifted.`,
+          { tag: 'schedule-adjust' });
+      } else if (delta < -5) {
+        Notify.alert('⏩ Ahead of Schedule!',
+          `${Math.abs(delta)} min early! Remaining activities shifted.`,
+          { tag: 'schedule-adjust' });
+      }
     }
 
     // Notify about next activity

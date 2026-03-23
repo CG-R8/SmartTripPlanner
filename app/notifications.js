@@ -127,7 +127,8 @@ const Notify = {
     if (!nextActivity) return;
 
     const times = ScheduleEngine.getAdjustedTimes(nextActivity, dayNumber);
-    const timeStr = times.start != null ? ScheduleEngine.formatTime(times.start) : '';
+    const tz = ScheduleEngine.getActivityTimezone(nextActivity, dayNumber);
+    const timeStr = times.startEpoch != null ? ScheduleEngine.formatEpochAsTime(times.startEpoch, tz) : '';
     const dist = nextActivity.distance;
     let body = `Next: ${nextActivity.title}`;
     if (timeStr) body += ` at ${timeStr}`;

@@ -2,6 +2,18 @@
 
 const Storage = {
   PREFIX: 'smarttrip_',
+  DATA_VERSION: 2,  // Must match sw.js DATA_VERSION — bump when data format changes
+
+  checkDataVersion() {
+    const stored = localStorage.getItem(this.PREFIX + 'data_version');
+    if (stored !== String(this.DATA_VERSION)) {
+      console.warn(`[Storage] Data version mismatch (stored=${stored}, current=${this.DATA_VERSION}) — clearing stale data`);
+      this.clearAllData();
+      localStorage.setItem(this.PREFIX + 'data_version', String(this.DATA_VERSION));
+      return true; // was cleared
+    }
+    return false;
+  },
 
   get(key) {
     try {

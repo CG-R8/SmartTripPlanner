@@ -177,6 +177,38 @@
       <button id="btn-reset-data" class="btn-primary" style="background: var(--red);">🗑️ Reset All Data</button>
     </div>
     <p style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 8px 0;">Clears all check-ins, expenses, adjustments & settings. For testing.</p>
+
+    <hr>
+    <!-- DEBUG TIME OVERRIDE -->
+    <div id="debug-panel">
+      <h3 class="debug-title">🧪 Debug: Time Travel</h3>
+      <p class="debug-desc">Override the app's clock for testing. All features will behave as if it's the selected date/time.</p>
+
+      <div class="debug-row">
+        <label for="debug-date">Date</label>
+        <input type="date" id="debug-date" />
+      </div>
+      <div class="debug-row">
+        <label for="debug-time">Time</label>
+        <input type="time" id="debug-time" step="1" />
+      </div>
+      <div class="debug-row">
+        <label for="debug-tz">Timezone</label>
+        <select id="debug-tz">
+          <option value="">— Use day's TZ —</option>
+          <option value="America/New_York">Eastern (EST/EDT)</option>
+          <option value="America/Chicago">Central (CST/CDT)</option>
+          <option value="America/Denver">Mountain (MST/MDT)</option>
+          <option value="America/Phoenix">Arizona (MST — no DST)</option>
+          <option value="America/Los_Angeles">Pacific (PST/PDT)</option>
+        </select>
+      </div>
+      <div class="debug-actions">
+        <button id="btn-debug-apply" class="btn-primary btn-debug-apply">⏱ Apply Time Override</button>
+        <button id="btn-debug-clear" class="btn-primary btn-debug-clear">↩ Use Real Time</button>
+      </div>
+      <div id="debug-status" class="debug-status"></div>
+    </div>
   </div>
 
   <!-- JS Modules -->
