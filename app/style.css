@@ -492,6 +492,48 @@ body {
   margin-bottom: 4px;
 }
 
+/* Map link buttons */
+.map-link {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(108, 92, 231, 0.15);
+  border: 1px solid rgba(108, 92, 231, 0.4);
+  border-radius: 8px;
+  color: #a29bfe;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  line-height: 1.4;
+  transition: background 0.15s, border-color 0.15s;
+  word-break: break-word;
+}
+
+.map-link:active {
+  background: rgba(108, 92, 231, 0.3);
+  border-color: #a29bfe;
+}
+
+.map-link-container {
+  margin: 6px 0;
+}
+
+.tl-map-link {
+  display: block;
+  margin: 8px 0;
+  text-align: center;
+}
+
+/* Phone link */
+.phone-link {
+  color: #74b9ff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.phone-link:active {
+  color: #a29bfe;
+}
+
 .tl-confirmation {
   background: rgba(233, 69, 96, 0.15);
   border: 1px solid var(--accent);

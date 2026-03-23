@@ -1,6 +1,6 @@
 // ===== sw.js — Service Worker for ChetanSmartTrip PWA (Offline Support) =====
 
-const CACHE_NAME = 'smarttrip-v11';
+const CACHE_NAME = 'smarttrip-v12';
 const DATA_VERSION = 2;  // Bump this when data format changes to auto-clear stale localStorage
 
 const ASSETS_TO_CACHE = [

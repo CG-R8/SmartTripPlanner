@@ -2,6 +2,30 @@
 
 const UI = {
 
+  /** Generate a Google Maps URL for a location object */
+  _mapUrl(location) {
+    if (!location) return null;
+    const query = location.address || location.name;
+    if (!query || query.toLowerCase().startsWith('en route')) return null;
+    return 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+  },
+
+  /** Build a clickable map-link element HTML from an activity */
+  _mapLinkHtml(activity) {
+    const url = this._mapUrl(activity?.location);
+    if (!url) return '';
+    const label = activity.location.address || activity.location.name;
+    return `<a href="${url}" target="_blank" rel="noopener" class="map-link">📍 ${label}</a>`;
+  },
+
+  /** Build a clickable map-link element HTML from a raw name/address */
+  _mapLinkFromText(name, address) {
+    const query = address || name;
+    if (!query) return '';
+    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+    return `<a href="${url}" target="_blank" rel="noopener" class="map-link">📍 ${address || name}</a>`;
+  },
+
   /** Render the day header section */
   renderDayHeader(day) {
     const tzAbbr = ScheduleEngine.getTimezoneAbbr(day.dayNumber);
@@ -61,6 +85,19 @@ const UI = {
 
     // Notes
     document.getElementById('current-notes').textContent = activity.notes || '';
+
+    // Map link
+    const mapEl = document.getElementById('current-map-link');
+    if (mapEl) {
+      const mapHtml = this._mapLinkHtml(activity);
+      if (mapHtml) {
+        mapEl.innerHTML = mapHtml;
+        mapEl.classList.remove('hidden');
+      } else {
+        mapEl.innerHTML = '';
+        mapEl.classList.add('hidden');
+      }
+    }
 
     // Status badge
     const badge = document.getElementById('current-status-badge');
@@ -167,6 +204,19 @@ const UI = {
     }
 
     document.getElementById('next-notes').textContent = activity.notes || '';
+
+    // Map link
+    const nextMapEl = document.getElementById('next-map-link');
+    if (nextMapEl) {
+      const mapHtml = this._mapLinkHtml(activity);
+      if (mapHtml) {
+        nextMapEl.innerHTML = mapHtml;
+        nextMapEl.classList.remove('hidden');
+      } else {
+        nextMapEl.innerHTML = '';
+        nextMapEl.classList.add('hidden');
+      }
+    }
   },
 
   /** Render hotel card */
@@ -178,8 +228,23 @@ const UI = {
     }
     document.getElementById('hotel-card').classList.remove('hidden');
     document.getElementById('hotel-name').textContent = hotel.name;
-    document.getElementById('hotel-address').textContent = hotel.address || '';
-    document.getElementById('hotel-phone').textContent = hotel.phone ? `📞 ${hotel.phone}` : '';
+
+    // Hotel address as clickable map link
+    const hotelAddrEl = document.getElementById('hotel-address');
+    if (hotel.address) {
+      hotelAddrEl.innerHTML = this._mapLinkFromText(hotel.name, hotel.address);
+    } else {
+      hotelAddrEl.textContent = '';
+    }
+
+    // Hotel phone as clickable tel: link
+    const hotelPhoneEl = document.getElementById('hotel-phone');
+    if (hotel.phone) {
+      const cleanPhone = hotel.phone.replace(/[^\d+]/g, '');
+      hotelPhoneEl.innerHTML = `<a href="tel:${cleanPhone}" class="phone-link">📞 ${hotel.phone}</a>`;
+    } else {
+      hotelPhoneEl.textContent = '';
+    }
   },
 
   /** Currently expanded activity id in timeline */
@@ -328,6 +393,13 @@ const UI = {
       html += `<p class="tl-meta">📍 ${activity.distance.miles} mi · ~${activity.distance.estimatedMinutes} min`;
       if (activity.distance.route) html += ` via ${activity.distance.route}`;
       html += '</p>';
+    }
+
+    // Map link
+    const mapUrl = this._mapUrl(activity.location);
+    if (mapUrl) {
+      const mapLabel = activity.location.address || activity.location.name;
+      html += `<a href="${mapUrl}" target="_blank" rel="noopener" class="map-link tl-map-link">📍 Open in Maps</a>`;
     }
 
     // Confirmation
