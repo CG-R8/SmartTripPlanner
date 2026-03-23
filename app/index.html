@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#e94560">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>SmartTrip — Southwest 2026</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== TOP STATUS BAR ===== -->
+  <header id="status-bar">
+    <div id="status-icon">●</div>
+    <div id="status-text">Loading trip...</div>
+    <div id="clock"></div>
+  </header>
+
+  <!-- ===== MORNING BRIEFING OVERLAY ===== -->
+  <div id="morning-briefing" class="overlay hidden">
+    <div class="overlay-content">
+      <h1 id="briefing-title">Good Morning!</h1>
+      <div id="briefing-weather" class="briefing-card"></div>
+      <div id="briefing-highlights" class="briefing-card"></div>
+      <div id="briefing-tips" class="briefing-card"></div>
+      <button id="briefing-dismiss" class="btn-primary">Let's Go! 🚀</button>
+    </div>
+  </div>
+
+  <!-- ===== CONFIRMATION OVERLAY ===== -->
+  <div id="confirmation-overlay" class="overlay hidden">
+    <div class="overlay-content">
+      <h2>📋 Confirmation Details</h2>
+      <div id="confirmation-details"></div>
+      <button id="confirmation-dismiss" class="btn-primary">Got It ✓</button>
+    </div>
+  </div>
+
+  <!-- ===== MAIN APP ===== -->
+  <main id="app">
+
+    <!-- DAY HEADER -->
+    <section id="day-header">
+      <div class="day-nav">
+        <button id="prev-day" class="nav-btn">◀</button>
+        <div id="day-title-area">
+          <h2 id="day-number">Day 1</h2>
+          <p id="day-title">Loading...</p>
+          <p id="day-date" class="subtle"></p>
+        </div>
+        <button id="next-day" class="nav-btn">▶</button>
+      </div>
+    </section>
+
+    <!-- WEATHER BANNER -->
+    <section id="weather-banner">
+      <span id="weather-icon">🌤️</span>
+      <span id="weather-text">Loading weather...</span>
+    </section>
+
+    <!-- CURRENT ACTIVITY CARD -->
+    <section id="current-card" class="activity-card highlight-card">
+      <div class="card-header">
+        <span class="card-label">NOW</span>
+        <span id="current-status-badge" class="status-badge">—</span>
+      </div>
+      <h3 id="current-title">—</h3>
+      <p id="current-time" class="card-time"></p>
+      <p id="current-notes" class="card-notes"></p>
+      <div id="current-confirmation" class="confirmation-box hidden"></div>
+      <div id="current-what-to-do" class="what-to-do hidden"></div>
+      <div id="current-tips" class="tips-box hidden"></div>
+      <div class="action-buttons">
+        <button id="btn-arrived" class="btn-action btn-arrive">✅ I'm Here</button>
+        <button id="btn-leaving" class="btn-action btn-leave">🚪 Leaving</button>
+      </div>
+    </section>
+
+    <!-- NEXT UP CARD -->
+    <section id="next-card" class="activity-card next-up-card">
+      <div class="card-header">
+        <span class="card-label">NEXT UP</span>
+        <span id="next-eta" class="eta-badge"></span>
+      </div>
+      <h3 id="next-title">—</h3>
+      <p id="next-time" class="card-time"></p>
+      <p id="next-distance" class="card-distance"></p>
+      <p id="next-notes" class="card-notes"></p>
+    </section>
+
+    <!-- HOTEL CARD (persistent for the day) -->
+    <section id="hotel-card" class="activity-card hotel-card">
+      <div class="card-header">
+        <span class="card-label">🏨 TONIGHT</span>
+        <button id="btn-show-confirmation" class="btn-small">Show Confirmation</button>
+      </div>
+      <h3 id="hotel-name">—</h3>
+      <p id="hotel-address" class="card-notes"></p>
+      <p id="hotel-phone" class="card-notes"></p>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="timeline">
+      <h3 class="section-title">Today's Schedule</h3>
+      <div id="timeline-list"></div>
+    </section>
+
+    <!-- EXPENSE TRACKER (optional) -->
+    <section id="expenses-section">
+      <h3 class="section-title">💰 Expenses Today</h3>
+      <div id="expense-list"></div>
+      <div class="expense-input">
+        <input type="text" id="expense-desc" placeholder="What for?" />
+        <input type="number" id="expense-amount" placeholder="$" step="0.01" />
+        <button id="btn-add-expense" class="btn-small">Add</button>
+      </div>
+      <p id="expense-total" class="subtle"></p>
+    </section>
+
+  </main>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav id="bottom-nav">
+    <button class="nav-tab active" data-view="today">📍 Today</button>
+    <button class="nav-tab" data-view="overview">📋 Overview</button>
+    <button class="nav-tab" data-view="emergency">🆘 Emergency</button>
+    <button class="nav-tab" data-view="settings">⚙️ Settings</button>
+  </nav>
+
+  <!-- ===== OVERVIEW VIEW ===== -->
+  <div id="view-overview" class="view-panel hidden">
+    <h2>📋 Trip Overview</h2>
+    <div id="overview-days"></div>
+  </div>
+
+  <!-- ===== EMERGENCY VIEW ===== -->
+  <div id="view-emergency" class="view-panel hidden">
+    <h2>🆘 Emergency Info</h2>
+    <div id="emergency-content"></div>
+  </div>
+
+  <!-- ===== SETTINGS VIEW ===== -->
+  <div id="view-settings" class="view-panel hidden">
+    <h2>⚙️ Settings</h2>
+    <div class="setting-row">
+      <label>Voice Notifications</label>
+      <input type="checkbox" id="setting-voice" />
+    </div>
+    <div class="setting-row">
+      <label>Browser Notifications</label>
+      <input type="checkbox" id="setting-notifications" />
+    </div>
+    <div class="setting-row">
+      <label>Check Interval (seconds)</label>
+      <input type="number" id="setting-interval" value="60" min="15" max="300" />
+    </div>
+    <div class="setting-row">
+      <label>Late Threshold (minutes)</label>
+      <input type="number" id="setting-late-threshold" value="10" min="5" max="60" />
+    </div>
+    <hr>
+    <div class="setting-row">
+      <label>Trip Total Expenses</label>
+      <span id="trip-total-expenses">$0.00</span>
+    </div>
+    <div class="setting-row">
+      <button id="btn-export-log" class="btn-primary">📥 Export Trip Log</button>
+    </div>
+    <div class="setting-row">
+      <button id="btn-show-briefing" class="btn-primary">🌅 Show Morning Briefing</button>
+    </div>
+    <hr>
+    <div class="setting-row">
+      <button id="btn-reset-data" class="btn-primary" style="background: var(--red);">🗑️ Reset All Data</button>
+    </div>
+    <p style="font-size: 11px; color: var(--text-muted); text-align: center; padding: 8px 0;">Clears all check-ins, expenses, adjustments & settings. For testing.</p>
+  </div>
+
+  <!-- JS Modules -->
+  <script src="storage.js"></script>
+  <script src="schedule-engine.js"></script>
+  <script src="notifications.js"></script>
+  <script src="ui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
