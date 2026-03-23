@@ -4,9 +4,10 @@ const UI = {
 
   /** Render the day header section */
   renderDayHeader(day) {
+    const tzAbbr = ScheduleEngine.getTimezoneAbbr(day.dayNumber);
     document.getElementById('day-number').textContent = `Day ${day.dayNumber} — ${day.dayOfWeek}`;
     document.getElementById('day-title').textContent = day.title;
-    document.getElementById('day-date').textContent = day.date;
+    document.getElementById('day-date').textContent = `${day.date}  ·  ${tzAbbr}`;
   },
 
   /** Render weather banner */
@@ -152,9 +153,9 @@ const UI = {
       document.getElementById('next-distance').textContent = '';
     }
 
-    // ETA — only show real-time countdown for today
+    // ETA — only show real-time countdown for today (TZ-aware)
     if (times.start != null && ScheduleEngine.isDayToday(dayNumber)) {
-      const minsUntil = times.start - ScheduleEngine.nowMinutes();
+      const minsUntil = times.start - ScheduleEngine.nowMinutes(dayNumber);
       document.getElementById('next-eta').textContent =
         minsUntil > 0 ? `in ${minsUntil} min` : 'now';
     } else if (times.start != null) {
@@ -190,7 +191,7 @@ const UI = {
     const isToday = ScheduleEngine.isDayToday(dayNumber);
     const isPast = ScheduleEngine.isDayPast(dayNumber);
     const isFuture = ScheduleEngine.isDayFuture(dayNumber);
-    const now = isToday ? ScheduleEngine.nowMinutes() : null;
+    const now = isToday ? ScheduleEngine.nowMinutes(dayNumber) : null;
     const currentActivity = ScheduleEngine.findCurrentActivity(dayNumber);
 
     activities.forEach(act => {
@@ -363,10 +364,14 @@ const UI = {
       </div>
     `;
 
-    // Show check-in timestamps if available
+    // Show check-in timestamps if available (stored as epoch ms)
     if (checkin && checkin.arrivedAt) {
-      html += `<p class="tl-checkin-info">Arrived: ${ScheduleEngine.formatTime(checkin.arrivedAt)}`;
-      if (checkin.leftAt) html += ` · Left: ${ScheduleEngine.formatTime(checkin.leftAt)}`;
+      const arrTime = ScheduleEngine.formatDateInTZ(new Date(checkin.arrivedAt), dayNumber);
+      html += `<p class="tl-checkin-info">Arrived: ${arrTime}`;
+      if (checkin.leftAt) {
+        const leftTime = ScheduleEngine.formatDateInTZ(new Date(checkin.leftAt), dayNumber);
+        html += ` · Left: ${leftTime}`;
+      }
       html += '</p>';
     }
 
@@ -405,7 +410,8 @@ const UI = {
 
     // Update clock
     document.getElementById('clock').textContent =
-      ScheduleEngine.formatDate(new Date());
+      ScheduleEngine.formatDate(new Date()) + ' ' +
+      ScheduleEngine.getTimezoneAbbr(App.currentDayNumber);
   },
 
   // ===== Morning Briefing =====

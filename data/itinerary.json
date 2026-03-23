@@ -71,6 +71,7 @@
       "dayNumber": 1,
       "date": "2026-03-24",
       "dayOfWeek": "Tuesday",
+      "timezone": "America/Los_Angeles",
       "title": "Arrive Los Angeles",
       "subtitle": "Newark → LAX → Motel 6",
       "weather": {
@@ -170,6 +171,7 @@
       "dayNumber": 2,
       "date": "2026-03-25",
       "dayOfWeek": "Wednesday",
+      "timezone": "America/Los_Angeles",
       "title": "LA Sightseeing → Ridgecrest",
       "subtitle": "Beverly Hills, Hollywood, Griffith Observatory → Desert Drive",
       "weather": {
@@ -335,6 +337,7 @@
       "dayNumber": 3,
       "date": "2026-03-26",
       "dayOfWeek": "Thursday",
+      "timezone": "America/Los_Angeles",
       "title": "Death Valley → Vegas + Car Swap",
       "subtitle": "Death Valley National Park → Henderson → Midnight Car Swap",
       "weather": {
@@ -517,6 +520,7 @@
       "dayNumber": 4,
       "date": "2026-03-27",
       "dayOfWeek": "Friday",
+      "timezone": "America/Phoenix",
       "title": "Hoover Dam → Grand Canyon Sunset",
       "subtitle": "Henderson → Hoover Dam → Kingman → Valle → Grand Canyon",
       "weather": {
@@ -690,6 +694,7 @@
       "dayNumber": 5,
       "date": "2026-03-28",
       "dayOfWeek": "Saturday",
+      "timezone": "America/Phoenix",
       "title": "⚠️ CRITICAL: Antelope Canyon Day",
       "subtitle": "Quick Grand Canyon Morning → Antelope Canyon Tour → Horseshoe Bend",
       "weather": {
@@ -858,6 +863,8 @@
       "dayNumber": 6,
       "date": "2026-03-29",
       "dayOfWeek": "Sunday",
+      "timezone": "America/Denver",
+      "timezoneNote": "Crosses AZ(MST/UTC-7) → UT(MDT/UTC-6). Phone clock jumps FORWARD 1hr at border. All times listed in MDT.",
       "title": "Page → Bryce Canyon",
       "subtitle": "Drive to Bryce Canyon National Park — Hoodoos & Rim Trail",
       "weather": {
@@ -1058,6 +1065,8 @@
       "dayNumber": 7,
       "date": "2026-03-30",
       "dayOfWeek": "Monday",
+      "timezone": "America/Los_Angeles",
+      "timezoneNote": "Starts in UT(MDT/UTC-6), crosses to NV(PDT/UTC-7). Phone clock jumps BACK 1hr. All times listed in PDT.",
       "title": "Zion National Park → Vegas Strip Finale",
       "subtitle": "Bryce → Zion → Las Vegas Strip Evening",
       "weather": {
@@ -1224,6 +1233,7 @@
       "dayNumber": 8,
       "date": "2026-03-31",
       "dayOfWeek": "Tuesday",
+      "timezone": "America/Los_Angeles",
       "title": "Final Day — Vegas → Fly Home",
       "subtitle": "Relax, Pool, Return Car, Fly Home",
       "weather": {

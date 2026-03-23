@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartTrip — Time & Timezone Validation Tests</title>
+  <style>
+    body { font-family: monospace; background: #1a1a2e; color: #f5f5f5; padding: 20px; font-size: 14px; }
+    h1 { color: #e94560; }
+    h2 { color: #ffa502; margin-top: 24px; }
+    .pass { color: #2ed573; }
+    .fail { color: #ff4757; font-weight: bold; }
+    .info { color: #a0a0b0; }
+    .warn { color: #ffa502; }
+    .test-block { background: #16213e; padding: 12px; border-radius: 8px; margin: 8px 0; }
+    .summary { background: #0f3460; padding: 16px; border-radius: 12px; margin-top: 24px; font-size: 16px; }
+    button { padding: 10px 20px; background: #e94560; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; margin: 4px; }
+    button:hover { opacity: 0.9; }
+    #output { white-space: pre-wrap; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <h1>🧪 SmartTrip — Time & Timezone Validation</h1>
+  <p class="info">Validates epoch-based storage, timezone conversions, and schedule logic</p>
+  <div>
+    <button onclick="runAllTests()">▶ Run All Tests</button>
+    <button onclick="document.getElementById('output').innerHTML=''">Clear</button>
+  </div>
+  <div id="output"></div>
+
+  <!-- Load app modules (same as main app) -->
+  <script src="storage.js"></script>
+  <script src="schedule-engine.js"></script>
+  <script src="notifications.js"></script>
+  <script src="ui.js"></script>
+
+  <script>
+    const out = document.getElementById('output');
+    let passCount = 0, failCount = 0, warnCount = 0;
+
+    function log(msg, cls = '') {
+      out.innerHTML += `<span class="${cls}">${msg}</span>\n`;
+    }
+
+    function assert(condition, label, detail = '') {
+      if (condition) {
+        passCount++;
+        log(`  ✅ PASS: ${label}`, 'pass');
+      } else {
+        failCount++;
+        log(`  ❌ FAIL: ${label} ${detail ? '— ' + detail : ''}`, 'fail');
+      }
+    }
+
+    function warn(msg) {
+      warnCount++;
+      log(`  ⚠️  ${msg}`, 'warn');
+    }
+
+    // =================================================================
+    // TEST 1: System Time Accuracy & Core Helpers
+    // =================================================================
+    function testSystemTime() {
+      log('\n<h2>1. System Time Accuracy & Core Helpers</h2>');
+
+      const now = new Date();
+      const sysHours = now.getHours();
+      const sysMins = now.getMinutes();
+      const tzName = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const tzOffset = now.getTimezoneOffset();
+
+      log(`  System time:    ${now.toLocaleString()}`, 'info');
+      log(`  ISO:            ${now.toISOString()}`, 'info');
+      log(`  Epoch ms:       ${now.getTime()}`, 'info');
+      log(`  Device TZ:      ${tzName}`, 'info');
+      log(`  UTC offset:     ${tzOffset > 0 ? '-' : '+'}${String(Math.abs(Math.floor(tzOffset/60))).padStart(2,'0')}:${String(Math.abs(tzOffset%60)).padStart(2,'0')}`, 'info');
+
+      // nowMinutes() with no args should match device local
+      const engineMins = ScheduleEngine.nowMinutes();
+      const expectedMins = sysHours * 60 + sysMins;
+      assert(
+        Math.abs(engineMins - expectedMins) <= 1,
+        'nowMinutes() [no args] matches device local clock',
+        `engine=${engineMins} (${ScheduleEngine.formatTime(engineMins)}), expected=${expectedMins}`
+      );
+
+      // todayStr()
+      const engineToday = ScheduleEngine.todayStr();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const d = String(now.getDate()).padStart(2, '0');
+      assert(engineToday === `${y}-${m}-${d}`, 'todayStr() matches system date', `got "${engineToday}"`);
+
+      // formatTime round-trips
+      const timeCases = [
+        [0, '12:00 AM'], [60, '1:00 AM'], [720, '12:00 PM'],
+        [780, '1:00 PM'], [1080, '6:00 PM'], [1439, '11:59 PM'],
+      ];
+      for (const [mins, expected] of timeCases) {
+        const result = ScheduleEngine.formatTime(mins);
+        assert(result === expected, `formatTime(${mins}) = "${expected}"`, `got "${result}"`);
+      }
+
+      // parseTime
+      const parseCases = [
+        ['00:00', 0], ['06:30', 390], ['12:00', 720], ['23:59', 1439], ['18:59', 1139],
+      ];
+      for (const [str, expected] of parseCases) {
+        const result = ScheduleEngine.parseTime(str);
+        assert(result === expected, `parseTime("${str}") = ${expected}`, `got ${result}`);
+      }
+    }
+
+    // =================================================================
+    // TEST 2: Timezone Functions (getDayTimezone, nowInTimezone, getTimezoneAbbr)
+    // =================================================================
+    function testTimezoneFunctions() {
+      log('\n<h2>2. Timezone Functions</h2>');
+
+      // Expected timezone per day
+      const expectedTZ = {
+        1: 'America/Los_Angeles',
+        2: 'America/Los_Angeles',
+        3: 'America/Los_Angeles',
+        4: 'America/Phoenix',
+        5: 'America/Phoenix',
+        6: 'America/Denver',
+        7: 'America/Los_Angeles',
+        8: 'America/Los_Angeles',
+      };
+
+      for (let d = 1; d <= 8; d++) {
+        const tz = ScheduleEngine.getDayTimezone(d);
+        assert(tz === expectedTZ[d], `Day ${d} timezone = "${expectedTZ[d]}"`, `got "${tz}"`);
+      }
+
+      // getTimezoneAbbr returns a short string
+      for (let d = 1; d <= 8; d++) {
+        const abbr = ScheduleEngine.getTimezoneAbbr(d);
+        assert(
+          typeof abbr === 'string' && abbr.length >= 2 && abbr.length <= 5,
+          `Day ${d} TZ abbreviation is "${abbr}"`
+        );
+        log(`    Day ${d}: ${expectedTZ[d]} → ${abbr}`, 'info');
+      }
+
+      // nowInTimezone returns valid structure
+      const tzList = ['America/Los_Angeles', 'America/Phoenix', 'America/Denver', 'America/New_York'];
+      for (const tz of tzList) {
+        const result = ScheduleEngine.nowInTimezone(tz);
+        assert(result.hours >= 0 && result.hours <= 23, `nowInTimezone("${tz}") hours valid`, `hours=${result.hours}`);
+        assert(result.minutes >= 0 && result.minutes <= 59, `nowInTimezone("${tz}") minutes valid`, `minutes=${result.minutes}`);
+        assert(/^\d{4}-\d{2}-\d{2}$/.test(result.dateStr), `nowInTimezone("${tz}") dateStr format ok`, `got "${result.dateStr}"`);
+        log(`    ${tz}: ${result.hours}:${String(result.minutes).padStart(2, '0')}:${String(result.seconds).padStart(2, '0')} on ${result.dateStr}`, 'info');
+      }
+
+      // Phoenix (MST, UTC-7) and LA (PDT, UTC-7) — same during DST
+      const phoenix = ScheduleEngine.nowInTimezone('America/Phoenix');
+      const la = ScheduleEngine.nowInTimezone('America/Los_Angeles');
+      const phxMins = phoenix.hours * 60 + phoenix.minutes;
+      const laMins = la.hours * 60 + la.minutes;
+      if (Math.abs(phxMins - laMins) <= 1) {
+        log(`    ✓ Phoenix & LA show same time (both UTC-7 during DST)`, 'pass');
+      } else {
+        warn(`Phoenix (${phxMins}min) vs LA (${laMins}min) — diff ${phxMins - laMins}min`);
+      }
+
+      // Denver (MDT, UTC-6) should be 1hr AHEAD of Phoenix (MST, UTC-7)
+      const denver = ScheduleEngine.nowInTimezone('America/Denver');
+      const denverMins = denver.hours * 60 + denver.minutes;
+      const diff = denverMins - phxMins;
+      assert(
+        Math.abs(diff - 60) <= 1,
+        'Denver (MDT) is 1hr ahead of Phoenix (MST)',
+        `Denver=${denverMins}min, Phoenix=${phxMins}min, diff=${diff}min`
+      );
+    }
+
+    // =================================================================
+    // TEST 3: Epoch-Based Arrival / Departure Storage
+    // =================================================================
+    function testEpochStorage() {
+      log('\n<h2>3. Epoch-Based Arrival / Departure Storage</h2>');
+
+      const testActId = '_test_epoch_001';
+      const checkins = Storage.getCheckIns();
+      delete checkins[testActId];
+      Storage.set('checkins', checkins);
+
+      // Record arrival with Date.now()
+      const beforeEpoch = Date.now();
+      Storage.recordArrival(testActId, Date.now());
+      const afterEpoch = Date.now();
+
+      const ci = Storage.getCheckin(testActId);
+      assert(ci !== null, 'Check-in record created');
+      assert(
+        typeof ci.arrivedAt === 'number' && ci.arrivedAt >= beforeEpoch && ci.arrivedAt <= afterEpoch,
+        'arrivedAt is epoch ms in range',
+        `stored=${ci.arrivedAt}`
+      );
+      assert(
+        typeof ci.arrivedAtISO === 'string' && ci.arrivedAtISO.includes('T'),
+        'arrivedAtISO is an ISO string',
+        `got "${ci.arrivedAtISO}"`
+      );
+      log(`    arrivedAt (epoch): ${ci.arrivedAt}`, 'info');
+      log(`    arrivedAtISO:      ${ci.arrivedAtISO}`, 'info');
+
+      const arrDate = new Date(ci.arrivedAt);
+      assert(!isNaN(arrDate.getTime()), 'Epoch converts to valid Date');
+
+      // Display in each timezone
+      log('\n    Displaying arrival time in each day\'s timezone:', 'info');
+      for (let d = 1; d <= 8; d++) {
+        const displayed = ScheduleEngine.formatDateInTZ(new Date(ci.arrivedAt), d);
+        const tzAbbr = ScheduleEngine.getTimezoneAbbr(d);
+        log(`      Day ${d} (${tzAbbr}): ${displayed}`, 'info');
+      }
+
+      // Record departure (simulate 5sec later)
+      const departEpoch = Date.now() + 5000;
+      Storage.recordDeparture(testActId, departEpoch);
+      const ci2 = Storage.getCheckin(testActId);
+      assert(ci2.leftAt > ci2.arrivedAt, 'Departure > Arrival');
+      assert(typeof ci2.leftAtISO === 'string', 'leftAtISO exists');
+
+      // epochToMinutesInTZ consistency
+      log('\n    epochToMinutesInTZ conversion test:', 'info');
+      const minsLA = ScheduleEngine.epochToMinutesInTZ(ci.arrivedAt, 1);
+      const minsPhoenix = ScheduleEngine.epochToMinutesInTZ(ci.arrivedAt, 4);
+      const minsDenver = ScheduleEngine.epochToMinutesInTZ(ci.arrivedAt, 6);
+      log(`      LA (Day 1):      ${minsLA} min → ${ScheduleEngine.formatTime(minsLA)}`, 'info');
+      log(`      Phoenix (Day 4): ${minsPhoenix} min → ${ScheduleEngine.formatTime(minsPhoenix)}`, 'info');
+      log(`      Denver (Day 6):  ${minsDenver} min → ${ScheduleEngine.formatTime(minsDenver)}`, 'info');
+
+      assert(Math.abs(minsPhoenix - minsLA) <= 1, 'Phoenix ≈ LA (both UTC-7)', `diff=${minsPhoenix - minsLA}`);
+      assert(Math.abs(minsDenver - minsPhoenix - 60) <= 1, 'Denver = Phoenix + 60min', `diff=${minsDenver - minsPhoenix}`);
+
+      // Cleanup
+      const clean = Storage.getCheckIns();
+      delete clean[testActId];
+      Storage.set('checkins', clean);
+    }
+
+    // =================================================================
+    // TEST 4: nowMinutes(dayNumber) — TZ-Aware Current Time
+    // =================================================================
+    function testNowMinutesWithTZ() {
+      log('\n<h2>4. nowMinutes(dayNumber) — TZ-Aware</h2>');
+
+      const localMins = ScheduleEngine.nowMinutes();
+      const now = new Date();
+      const expectedLocal = now.getHours() * 60 + now.getMinutes();
+      assert(
+        Math.abs(localMins - expectedLocal) <= 1,
+        'nowMinutes() [no arg] = device local',
+        `got ${localMins}, expected ~${expectedLocal}`
+      );
+
+      const day1Mins = ScheduleEngine.nowMinutes(1);
+      const day4Mins = ScheduleEngine.nowMinutes(4);
+      const day6Mins = ScheduleEngine.nowMinutes(6);
+
+      log(`    Day 1 (LA/PDT):      ${day1Mins} → ${ScheduleEngine.formatTime(day1Mins)}`, 'info');
+      log(`    Day 4 (Phoenix/MST): ${day4Mins} → ${ScheduleEngine.formatTime(day4Mins)}`, 'info');
+      log(`    Day 6 (Denver/MDT):  ${day6Mins} → ${ScheduleEngine.formatTime(day6Mins)}`, 'info');
+
+      assert(Math.abs(day1Mins - day4Mins) <= 1, 'Day 1 (LA) ≈ Day 4 (Phoenix)', `diff=${day1Mins - day4Mins}`);
+      assert(Math.abs(day6Mins - day4Mins - 60) <= 1, 'Day 6 (Denver) = Day 4 + 60min', `diff=${day6Mins - day4Mins}`);
+
+      // Cross-check with nowInTimezone
+      for (let d = 1; d <= 8; d++) {
+        const tz = ScheduleEngine.getDayTimezone(d);
+        const viaNowMins = ScheduleEngine.nowMinutes(d);
+        const viaNowInTZ = ScheduleEngine.nowInTimezone(tz);
+        const expectedFromTZ = viaNowInTZ.hours * 60 + viaNowInTZ.minutes;
+        assert(
+          Math.abs(viaNowMins - expectedFromTZ) <= 1,
+          `nowMinutes(${d}) ≈ nowInTimezone("${tz}")`,
+          `nowMins=${viaNowMins}, fromTZ=${expectedFromTZ}`
+        );
+      }
+    }
+
+    // =================================================================
+    // TEST 5: Schedule Adjustment Logic
+    // =================================================================
+    function testScheduleAdjustment() {
+      log('\n<h2>5. Schedule Adjustment Logic</h2>');
+
+      const origAdj = Storage.getAdjustments();
+      const testDay = ScheduleEngine.itinerary.days[0];
+
+      if (testDay && testDay.activities.length > 0) {
+        const act = testDay.activities[0];
+        const plannedEnd = ScheduleEngine.parseTime(act.plannedEnd);
+        if (plannedEnd != null) {
+          Storage.setDayAdjustment(testDay.dayNumber, 0);
+
+          const delta1 = ScheduleEngine.adjustSchedule(testDay.dayNumber, act.id, plannedEnd + 15);
+          assert(delta1 === 15, '15-min-late → delta=15', `got ${delta1}`);
+
+          const delta2 = ScheduleEngine.adjustSchedule(testDay.dayNumber, act.id, plannedEnd - 10);
+          assert(delta2 === -10, '10-min-early → delta=-10', `got ${delta2}`);
+
+          const delta3 = ScheduleEngine.adjustSchedule(testDay.dayNumber, act.id, plannedEnd);
+          assert(delta3 === 0, 'On-time → delta=0', `got ${delta3}`);
+
+          log(`    "${act.title}" planned end: ${ScheduleEngine.formatTime(plannedEnd)}`, 'info');
+        }
+      }
+
+      Storage.set('adjustments', origAdj);
+    }
+
+    // =================================================================
+    // TEST 6: Current Activity Detection (epoch check-ins)
+    // =================================================================
+    function testCurrentActivity() {
+      log('\n<h2>6. Current Activity Detection (Epoch Check-ins)</h2>');
+
+      const origCheckins = Storage.getCheckIns();
+      const origAdj = Storage.getAdjustments();
+
+      const dayNum = 1;
+      const activities = ScheduleEngine.getDayActivities(dayNum);
+      log(`  Day ${dayNum}: ${activities.length} activities`, 'info');
+
+      if (activities.length < 2) {
+        warn('Not enough activities to test');
+        return;
+      }
+
+      Storage.set('checkins', {});
+      Storage.setDayAdjustment(dayNum, 0);
+
+      const act0 = activities[0];
+      const act1 = activities[1];
+      log(`    Act 0: "${act0.title}" (${act0.plannedStart}→${act0.plannedEnd})`, 'info');
+      log(`    Act 1: "${act1.title}" (${act1.plannedStart}→${act1.plannedEnd})`, 'info');
+
+      // Mark act0 as done with epoch timestamps
+      const fakeArrival = Date.now() - 3600000;
+      const fakeDeparture = Date.now() - 1800000;
+      Storage.recordArrival(act0.id, fakeArrival);
+      Storage.recordDeparture(act0.id, fakeDeparture);
+
+      log(`    Marked act0 arrived=${new Date(fakeArrival).toLocaleTimeString()}, left=${new Date(fakeDeparture).toLocaleTimeString()}`, 'info');
+
+      const current = ScheduleEngine.findCurrentActivity(dayNum);
+      if (current) {
+        assert(current.id !== act0.id, 'After completing act0, current is NOT act0', `current="${current.title}"`);
+        log(`    Current activity: "${current.title}"`, 'info');
+      } else {
+        log(`    Current activity: null (no match by time)`, 'info');
+      }
+
+      // "I'm Here" on act1 → current should be act1
+      Storage.recordArrival(act1.id, Date.now());
+      const current2 = ScheduleEngine.findCurrentActivity(dayNum);
+      assert(
+        current2 && current2.id === act1.id,
+        'After arriving at act1, current IS act1',
+        `current="${current2?.title}"`
+      );
+
+      // Verify epoch values are truthy (for UI boolean checks)
+      const ci = Storage.getCheckin(act1.id);
+      assert(!!ci.arrivedAt, 'Epoch arrivedAt is truthy');
+      assert(ci.arrivedAt > 1000000000000, 'Epoch in milliseconds range (>10^12)', `val=${ci.arrivedAt}`);
+
+      // Restore
+      Storage.set('checkins', origCheckins);
+      Storage.set('adjustments', origAdj);
+    }
+
+    // =================================================================
+    // TEST 7: Timezone Trip Map & Border Crossings
+    // =================================================================
+    function testTimezoneTripMap() {
+      log('\n<h2>7. Timezone Trip Map & Border Crossings</h2>');
+
+      const tzMap = [
+        { day: 1, date: '2026-03-24', route: 'Newark → LAX',               tz: 'America/Los_Angeles',  note: 'Fly EDT→PDT, -3hr' },
+        { day: 2, date: '2026-03-25', route: 'LA → Ridgecrest',            tz: 'America/Los_Angeles',  note: 'All PDT' },
+        { day: 3, date: '2026-03-26', route: 'Death Valley → Vegas',       tz: 'America/Los_Angeles',  note: 'All PDT' },
+        { day: 4, date: '2026-03-27', route: 'Vegas → Grand Canyon AZ',    tz: 'America/Phoenix',      note: 'PDT→MST (both UTC-7, no change)' },
+        { day: 5, date: '2026-03-28', route: 'Grand Canyon → Page AZ',     tz: 'America/Phoenix',      note: 'All MST' },
+        { day: 6, date: '2026-03-29', route: 'Page AZ → Bryce Canyon UT',  tz: 'America/Denver',       note: '⚠️ AZ→UT: clock FORWARD 1hr (MST→MDT)' },
+        { day: 7, date: '2026-03-30', route: 'Bryce → Zion → Vegas',       tz: 'America/Los_Angeles',  note: '⚠️ UT→NV: clock BACK 1hr (MDT→PDT)' },
+        { day: 8, date: '2026-03-31', route: 'Vegas → Newark',             tz: 'America/Los_Angeles',  note: 'Fly PDT→EDT, +3hr' },
+      ];
+
+      for (const item of tzMap) {
+        const dayTZ = ScheduleEngine.getDayTimezone(item.day);
+        const abbr = ScheduleEngine.getTimezoneAbbr(item.day);
+        assert(dayTZ === item.tz, `Day ${item.day} TZ = "${item.tz}"`, `got "${dayTZ}"`);
+
+        const icon = item.note.includes('⚠️') ? '🔄' : '📍';
+        log(`    ${icon} Day ${item.day} | ${item.date} | ${item.route}`, 'info');
+        log(`       ${dayTZ} (${abbr}) — ${item.note}`, item.note.includes('⚠️') ? 'warn' : 'info');
+      }
+
+      // Verify Day 6 and 7 have timezoneNote
+      const day6 = ScheduleEngine.itinerary.days.find(d => d.dayNumber === 6);
+      const day7 = ScheduleEngine.itinerary.days.find(d => d.dayNumber === 7);
+      if (day6) {
+        assert(!!day6.timezoneNote, 'Day 6 has timezoneNote');
+        log(`    Day 6 note: "${day6.timezoneNote}"`, 'warn');
+      }
+      if (day7) {
+        assert(!!day7.timezoneNote, 'Day 7 has timezoneNote');
+        log(`    Day 7 note: "${day7.timezoneNote}"`, 'warn');
+      }
+    }
+
+    // =================================================================
+    // TEST 8: End-to-End "I'm Here" / "Leaving" Simulation
+    // =================================================================
+    function testButtonSimulation() {
+      log('\n<h2>8. End-to-End: "I\'m Here" / "Leaving" Simulation</h2>');
+
+      const origCheckins = Storage.getCheckIns();
+      const origAdj = Storage.getAdjustments();
+
+      const dayNum = 3;
+      const activities = ScheduleEngine.getDayActivities(dayNum);
+      if (activities.length === 0) { warn('No activities for Day 3'); return; }
+
+      Storage.set('checkins', {});
+      Storage.setDayAdjustment(dayNum, 0);
+
+      const act = activities[0];
+      const tz = ScheduleEngine.getDayTimezone(dayNum);
+      const tzAbbr = ScheduleEngine.getTimezoneAbbr(dayNum);
+      log(`  Day ${dayNum} — TZ: ${tz} (${tzAbbr})`, 'info');
+      log(`  Activity: "${act.title}"`, 'info');
+
+      // === "I'm Here" ===
+      const arrivalEpoch = Date.now();
+      Storage.recordArrival(act.id, arrivalEpoch);
+      const ci = Storage.getCheckin(act.id);
+      assert(ci !== null && ci.arrivedAt === arrivalEpoch, '"I\'m Here" recorded with epoch');
+
+      const arrDisplay = ScheduleEngine.formatDateInTZ(new Date(ci.arrivedAt), dayNum);
+      log(`  ✅ Arrived at ${arrDisplay} ${tzAbbr}`, 'pass');
+      log(`     epoch: ${ci.arrivedAt} | ISO: ${ci.arrivedAtISO}`, 'info');
+
+      // Arrival minutes should match current minutes in day TZ
+      const arrMinsInTZ = ScheduleEngine.epochToMinutesInTZ(ci.arrivedAt, dayNum);
+      const nowMinsInTZ = ScheduleEngine.nowMinutes(dayNum);
+      assert(
+        Math.abs(arrMinsInTZ - nowMinsInTZ) <= 1,
+        'Arrival minutes ≈ current time in day TZ',
+        `arrival=${arrMinsInTZ}, now=${nowMinsInTZ}`
+      );
+
+      // === "Leaving" ===
+      const departEpoch = Date.now();
+      Storage.recordDeparture(act.id, departEpoch);
+      const ci2 = Storage.getCheckin(act.id);
+      assert(ci2.leftAt >= ci2.arrivedAt, 'Departure ≥ Arrival');
+
+      const depDisplay = ScheduleEngine.formatDateInTZ(new Date(ci2.leftAt), dayNum);
+      log(`  🚪 Left at ${depDisplay} ${tzAbbr}`, 'pass');
+
+      // Schedule adjustment using TZ-correct minutes
+      const nowMins = ScheduleEngine.nowMinutes(dayNum);
+      const delta = ScheduleEngine.adjustSchedule(dayNum, act.id, nowMins);
+      const plannedEnd = ScheduleEngine.parseTime(act.plannedEnd);
+      if (plannedEnd != null) {
+        const expectedDelta = nowMins - plannedEnd;
+        assert(delta === expectedDelta, 'Schedule adjustment uses TZ-correct minutes', `delta=${delta}, expected=${expectedDelta}`);
+        if (delta > 0) log(`  📊 Running ${delta} min late`, 'warn');
+        else if (delta < 0) log(`  📊 ${Math.abs(delta)} min early`, 'pass');
+        else log(`  📊 Exactly on time!`, 'pass');
+      }
+
+      // Restore
+      Storage.set('checkins', origCheckins);
+      Storage.set('adjustments', origAdj);
+    }
+
+    // =================================================================
+    // TEST 9: Cross-Timezone Display Consistency
+    // =================================================================
+    function testCrossTimezoneDisplay() {
+      log('\n<h2>9. Cross-Timezone Display Consistency</h2>');
+      log('  Scenario: check in during Day 5 (Phoenix), view from Day 6 (Denver)', 'info');
+
+      const testActId = '_test_cross_tz_001';
+      Storage.set('checkins', {});
+
+      const checkinEpoch = Date.now();
+      Storage.recordArrival(testActId, checkinEpoch);
+
+      const displayDay5 = ScheduleEngine.formatDateInTZ(new Date(checkinEpoch), 5);
+      const abbrDay5 = ScheduleEngine.getTimezoneAbbr(5);
+      const displayDay6 = ScheduleEngine.formatDateInTZ(new Date(checkinEpoch), 6);
+      const abbrDay6 = ScheduleEngine.getTimezoneAbbr(6);
+
+      log(`  Epoch: ${checkinEpoch}`, 'info');
+      log(`  Day 5 view (${abbrDay5}): ${displayDay5}`, 'info');
+      log(`  Day 6 view (${abbrDay6}): ${displayDay6}`, 'info');
+
+      const minsDay5 = ScheduleEngine.epochToMinutesInTZ(checkinEpoch, 5);
+      const minsDay6 = ScheduleEngine.epochToMinutesInTZ(checkinEpoch, 6);
+      const diff = minsDay6 - minsDay5;
+      assert(
+        Math.abs(diff - 60) <= 1,
+        'Same epoch shows 1hr later in Denver than Phoenix',
+        `day5=${minsDay5}min, day6=${minsDay6}min, diff=${diff}`
+      );
+      log('  ✓ Epoch-based storage ensures correct display in ANY timezone!', 'pass');
+
+      // Cleanup
+      const clean = Storage.getCheckIns();
+      delete clean[testActId];
+      Storage.set('checkins', clean);
+    }
+
+    // =================================================================
+    // RUN ALL
+    // =================================================================
+    async function runAllTests() {
+      out.innerHTML = '';
+      passCount = failCount = warnCount = 0;
+
+      try {
+        const resp = await fetch('../data/itinerary.json');
+        const data = await resp.json();
+        ScheduleEngine.load(data);
+        log('✓ Itinerary loaded (' + data.days.length + ' days)\n', 'pass');
+      } catch (e) {
+        log('❌ Failed to load itinerary: ' + e.message, 'fail');
+        return;
+      }
+
+      testSystemTime();
+      testTimezoneFunctions();
+      testEpochStorage();
+      testNowMinutesWithTZ();
+      testScheduleAdjustment();
+      testCurrentActivity();
+      testTimezoneTripMap();
+      testButtonSimulation();
+      testCrossTimezoneDisplay();
+
+      // Summary
+      log(`\n<div class="summary">`, '');
+      log(`📊 Results: <span class="pass">${passCount} passed</span>, <span class="fail">${failCount} failed</span>, <span class="warn">${warnCount} warnings</span>`, '');
+      if (failCount === 0) {
+        log('🎉 All time calculations and timezone conversions are CORRECT!', 'pass');
+        log('✓ Epoch-based storage is working', 'pass');
+        log('✓ Timezone-aware display is working', 'pass');
+        log('✓ Schedule adjustments use TZ-correct time', 'pass');
+      }
+      if (warnCount > 0) {
+        log(`⚠️  ${warnCount} warnings — review border crossing notes.`, 'warn');
+      }
+      log('</div>', '');
+    }
+  </script>
+</body>
+</html>

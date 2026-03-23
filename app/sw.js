@@ -1,6 +1,6 @@
 // ===== sw.js — Service Worker for ChetanSmartTrip PWA (Offline Support) =====
 
-const CACHE_NAME = 'smarttrip-v5';
+const CACHE_NAME = 'smarttrip-v6';
 
 const ASSETS_TO_CACHE = [
   './',

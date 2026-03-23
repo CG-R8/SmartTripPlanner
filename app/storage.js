@@ -30,17 +30,19 @@ const Storage = {
     return this.get('checkins') || {};
   },
 
-  recordArrival(activityId, time) {
+  recordArrival(activityId, epochMs) {
     const checkins = this.getCheckIns();
     if (!checkins[activityId]) checkins[activityId] = {};
-    checkins[activityId].arrivedAt = time;
+    checkins[activityId].arrivedAt = epochMs;
+    checkins[activityId].arrivedAtISO = new Date(epochMs).toISOString();
     this.set('checkins', checkins);
   },
 
-  recordDeparture(activityId, time) {
+  recordDeparture(activityId, epochMs) {
     const checkins = this.getCheckIns();
     if (!checkins[activityId]) checkins[activityId] = {};
-    checkins[activityId].leftAt = time;
+    checkins[activityId].leftAt = epochMs;
+    checkins[activityId].leftAtISO = new Date(epochMs).toISOString();
     this.set('checkins', checkins);
   },
 

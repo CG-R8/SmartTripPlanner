@@ -91,10 +91,11 @@ const App = {
       this._updateCurrentStatus();
     }, interval);
 
-    // Also update clock every second
+    // Also update clock every second (with timezone abbreviation)
     setInterval(() => {
+      const tz = ScheduleEngine.getTimezoneAbbr(this.currentDayNumber);
       document.getElementById('clock').textContent =
-        ScheduleEngine.formatDate(new Date());
+        ScheduleEngine.formatDate(new Date()) + ' ' + tz;
     }, 1000);
   },
 
@@ -254,8 +255,8 @@ const App = {
     const activity = ScheduleEngine.getDayActivities(dayNumber).find(a => a.id === activityId);
     if (!activity) return;
 
-    const nowMins = ScheduleEngine.nowMinutes();
-    Storage.recordArrival(activityId, nowMins);
+    const epochMs = Date.now();
+    Storage.recordArrival(activityId, epochMs);
 
     // Show confirmation if available
     if (activity.confirmation) {
@@ -276,10 +277,11 @@ const App = {
     const activity = ScheduleEngine.getDayActivities(dayNumber).find(a => a.id === activityId);
     if (!activity) return;
 
-    const nowMins = ScheduleEngine.nowMinutes();
-    Storage.recordDeparture(activityId, nowMins);
+    const epochMs = Date.now();
+    Storage.recordDeparture(activityId, epochMs);
 
-    // Adjust schedule
+    // Adjust schedule using timezone-correct minutes
+    const nowMins = ScheduleEngine.nowMinutes(dayNumber);
     const delta = ScheduleEngine.adjustSchedule(dayNumber, activityId, nowMins);
 
     // Notify about adjustment

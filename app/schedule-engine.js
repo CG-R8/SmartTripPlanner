@@ -1,4 +1,6 @@
 // ===== schedule-engine.js — Core time comparison & schedule logic =====
+// All planned times in itinerary.json are in the day's timezone.
+// We convert the current real time to that timezone before comparing.
 
 const ScheduleEngine = {
 
@@ -18,7 +20,45 @@ const ScheduleEngine = {
     return this.itinerary.days.find(d => d.dayNumber === dayNum) || null;
   },
 
-  /** Get today's date as YYYY-MM-DD */
+  /** Get the IANA timezone for a given day number */
+  getDayTimezone(dayNumber) {
+    const day = this.getTripDayByNumber(dayNumber);
+    return day?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  },
+
+  /**
+   * Get the current time in a specific IANA timezone as { hours, minutes, dateStr }.
+   * This is THE key function — it answers "what time is it RIGHT NOW in the day's timezone?"
+   */
+  nowInTimezone(tz) {
+    const now = new Date();
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const parts = formatter.formatToParts(now);
+    const get = (type) => {
+      const p = parts.find(p => p.type === type);
+      return p ? parseInt(p.value, 10) : 0;
+    };
+    const year = get('year');
+    const month = get('month');
+    const day = get('day');
+    return {
+      hours: get('hour') === 24 ? 0 : get('hour'), // midnight edge case
+      minutes: get('minute'),
+      seconds: get('second'),
+      dateStr: `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    };
+  },
+
+  /** Get today's date as YYYY-MM-DD (in device local timezone) */
   todayStr() {
     const now = new Date();
     return now.getFullYear() + '-' +
@@ -71,13 +111,62 @@ const ScheduleEngine = {
     return `${hours}:${String(mins).padStart(2, '0')} ${ampm}`;
   },
 
-  /** Current time as minutes since midnight */
-  nowMinutes() {
+  /**
+   * Current time as minutes since midnight IN THE DAY'S TIMEZONE.
+   * Pass dayNumber to get timezone-correct time. Without it, uses device local.
+   */
+  nowMinutes(dayNumber) {
+    if (dayNumber != null) {
+      const tz = this.getDayTimezone(dayNumber);
+      const t = this.nowInTimezone(tz);
+      return t.hours * 60 + t.minutes;
+    }
+    // Fallback: device local time
     const now = new Date();
     return now.getHours() * 60 + now.getMinutes();
   },
 
-  /** Format a Date object as "h:mm AM/PM" */
+  /**
+   * Get the timezone abbreviation for a day (e.g., "PDT", "MST").
+   * Useful for display.
+   */
+  getTimezoneAbbr(dayNumber) {
+    const tz = this.getDayTimezone(dayNumber);
+    try {
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        timeZoneName: 'short'
+      });
+      const parts = formatter.formatToParts(new Date());
+      const tzPart = parts.find(p => p.type === 'timeZoneName');
+      return tzPart ? tzPart.value : tz;
+    } catch {
+      return tz;
+    }
+  },
+
+  /** Format a Date object as "h:mm AM/PM" in a specific timezone */
+  formatDateInTZ(date, dayNumber) {
+    const tz = this.getDayTimezone(dayNumber);
+    try {
+      return date.toLocaleTimeString('en-US', {
+        timeZone: tz,
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+    } catch {
+      // Fallback to device local
+      let h = date.getHours();
+      const m = date.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      if (h === 0) h = 12;
+      else if (h > 12) h -= 12;
+      return `${h}:${String(m).padStart(2, '0')} ${ampm}`;
+    }
+  },
+
+  /** Format a Date object as "h:mm AM/PM" in device local timezone */
   formatDate(date) {
     let h = date.getHours();
     const m = date.getMinutes();
@@ -85,6 +174,25 @@ const ScheduleEngine = {
     if (h === 0) h = 12;
     else if (h > 12) h -= 12;
     return `${h}:${String(m).padStart(2, '0')} ${ampm}`;
+  },
+
+  /**
+   * Convert an epoch timestamp (ms) to minutes-since-midnight in a day's timezone.
+   * Used to display stored arrival/departure times correctly.
+   */
+  epochToMinutesInTZ(epochMs, dayNumber) {
+    const tz = this.getDayTimezone(dayNumber);
+    const date = new Date(epochMs);
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false
+    });
+    const parts = formatter.formatToParts(date);
+    const h = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+    const m = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+    return (h === 24 ? 0 : h) * 60 + m;
   },
 
   // ===== Activity Lookup =====
@@ -123,7 +231,7 @@ const ScheduleEngine = {
 
     // Only use real-time matching if this day IS today
     if (isToday) {
-      const now = this.nowMinutes();
+      const now = this.nowMinutes(dayNumber);
 
       // Second: find activity whose adjusted time window contains "now"
       // SKIP activities that are already done (both arrived + left)
@@ -221,7 +329,7 @@ const ScheduleEngine = {
     }
 
     // === Today: use real-time comparison ===
-    const now = this.nowMinutes();
+    const now = this.nowMinutes(dayNumber);
     const times = this.getAdjustedTimes(current, dayNumber);
     const checkin = Storage.getCheckin(current.id);
     const settings = Storage.getSettings();
@@ -302,7 +410,7 @@ const ScheduleEngine = {
     const plannedEnd = this.parseTime(activity.plannedEnd);
     if (plannedEnd == null) return 0;
 
-    const actualEnd = typeof departureTime === 'number' ? departureTime : this.nowMinutes();
+    const actualEnd = typeof departureTime === 'number' ? departureTime : this.nowMinutes(dayNumber);
     const newDelta = actualEnd - plannedEnd;
 
     Storage.setDayAdjustment(dayNumber, newDelta);

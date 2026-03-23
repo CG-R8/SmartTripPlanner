@@ -1,0 +1,34 @@
+
+I have very very detailed plan of a itinerary trip of a 7 to 8 days, and this is very detailed it that identity. I have included what hotel i m taking staying. What are their confirmation numbers how much did they cost which places I'm heading to and I'm having breakfast and what this is. I'm visiting seeing them how much time and distance it is from place a to place b r to the hotel or from the hotels, and then I have General day. I have information about weather of those cities are of those places on the day of visit, and I do have some tips of every place and again this is in very depth. I use Android samsung s23 
+
+ I'm thinking an AI could help me to to come up with some App, website or something like that. And then when I'm on vacation this app would be running accessing my maybe location and some data internet Wi-Fi, whatever you call it. I thought it needs and then keeps me informed bt saying- Hey, you should be doing this next or you should be at this place according to the detail itenary, I gave it. So for an example, let's say if I'm going to visit a location a and then app should tell me. Hey, it's going to take you now X minutes from the current location, and maybe when I visit that please and then it's time to leave the app should give me a another notification or say it saying. Hey, you're running half an hour late according to your previously planned. It can then autom,atically adjust a schedule of the day once let's say if I'm early or if I'm late. I know this sounds very complicated. But what do you think about it again? Don't sugar coat anything. I am a senior software engineer. I know how softwares work. I know how they being built. 
+
+I think a not giving it a GPS access might be easier if I just you now tap on the location and whether Im arrived or whether I'm leaving might be a first step of might be easier option maybe later we can integrate GPS in it. Now. It definitely needs the internet access. So I got your point there and we can try to have this app running locally as much as possible when there is no internet along with that. I'm definitely planning to have this application on my local system. No hosting no encryption nothing at all. What do you think? Maybe we should first start with some basic tracing planning. I dont want to jump on implemetation at all yet. I am focusing on the ideation and planning and designing. 
+
+One more thing is the batter consumption - i think if i keep the GPS on whole time it would consume lot of battery.
+
+Questions - Do we need AI assitance in this process ?
+Adding AI in could be constly ? - but if we feed all the itenary to it - it would be simpler - since i think we dont need to wire down the logic ?(need honest opinion)
+By adding AI may add complexity as well. - some thing just came up in my mind - it would be not useful it there is no internet.
+
+
+
+So - expectatios 
+Run the App of website 
+-keep it running in background
+-App determines current the time and place vs what is planned in the details itenary.
+-Inform user via notification or voice 
+	- You are on track 
+	- you are delay by x min.
+	- you are early by x min.
+- inform user - how much distance and time it would take from the current place to next upcoming location (realtime or offline distance calculation)
+- Every start of the day - give details of weather of the day.
+- When user reach to designation place of visit - inform user what user can do (again coming from the iternary)
+- optional - keep track of expenses asking user to input those details.
+- When tehre is no internet or GPS available - app should work in offline mode.
+- When user reaches to his reservations - give user confirmation numbser (again if present in the itenary)
+- up for more suggestions
+
+
+
+
